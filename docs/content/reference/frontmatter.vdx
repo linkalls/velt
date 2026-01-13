@@ -1,0 +1,132 @@
++++
+layout = "default"
+title = "Frontmatter Reference"
++++
+
+# Frontmatter Reference
+
+Frontmatter is TOML-formatted metadata at the top of `.vdx` files.
+
+## Syntax
+
+Frontmatter is enclosed in `+++` markers:
+
+```markdown
++++
+layout = "default"
+title = "My Page Title"
++++
+
+# Page Content Here
+```
+
+## Required Fields
+
+None. All fields are optional with sensible defaults.
+
+## Available Fields
+
+### `layout`
+
+Specifies which layout template to use.
+
+```toml
+layout = "default"
+```
+
+| Value | Description |
+|-------|-------------|
+| `default` | Standard documentation layout with sidebar |
+| `landing` | Landing page layout (excluded from nav) |
+| Custom | Any layout file in `layouts/` directory |
+
+<Callout type_="info">
+Default value is `"default"` if not specified.
+</Callout>
+
+### `title`
+
+The page title, used in:
+- Browser tab (`<title>`)
+- Navigation sidebar
+- SEO meta tags
+
+```toml
+title = "Getting Started"
+```
+
+If not specified, the filename is used as a fallback.
+
+## Future Fields
+
+<Callout type_="warning">
+These fields are planned for future versions:
+</Callout>
+
+### `description`
+
+Page description for SEO.
+
+```toml
+description = "Learn how to install and configure Velt"
+```
+
+### `date`
+
+Publication date for blog posts.
+
+```toml
+date = 2024-01-15
+```
+
+### `draft`
+
+Mark page as draft (excluded from build).
+
+```toml
+draft = true
+```
+
+### `order`
+
+Custom ordering in navigation.
+
+```toml
+order = 1
+```
+
+## Examples
+
+Minimal page:
+
+```markdown
++++
+title = "About"
++++
+
+# About Us
+```
+
+Full documentation page:
+
+```markdown
++++
+layout = "default"
+title = "Installation Guide"
++++
+
+# Installation Guide
+
+Welcome to the installation guide...
+```
+
+Landing page:
+
+```markdown
++++
+layout = "landing"
+title = "Welcome to Velt"
++++
+
+<Hero title="Build Fast" subtitle="Static sites with V" />
+```

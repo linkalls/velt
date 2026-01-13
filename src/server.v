@@ -89,7 +89,7 @@ fn serve_page(mut ctx Context, name string) veb.Result {
 		}
 
 		println('[velt] Building on demand: ${vdx_file}')
-		build_one(vdx_file)
+		build_all()  // Rebuild all to ensure navigation is correct
 
 		html = os.read_file(html_file) or {
 			eprintln('Failed to read built file ${html_file}: ${err}')

@@ -1,0 +1,77 @@
++++
+layout = "default"
+title = "Project Structure"
++++
+
+# Project Structure
+
+Understanding how a Velt project is organized.
+
+## Directory Layout
+
+A typical Velt project has the following structure:
+
+```
+my-project/
+├── content/          # Your pages (.vdx files)
+│   ├── index.vdx
+│   ├── about.vdx
+│   └── docs/         # Nested directories become nav sections
+│       └── intro.vdx
+├── layouts/          # V layout templates
+│   ├── default.v
+│   └── landing.v
+├── components/       # Reusable V components
+│   ├── callout.v
+│   └── hero.v
+├── assets/           # Static files (CSS, images, etc.)
+│   └── style.css
+└── dist/             # Generated HTML output
+```
+
+## Content Directory
+
+The `content/` directory contains your `.vdx` files. Each file becomes a page.
+
+### Nested Directories
+
+Subdirectories create navigation sections:
+
+```
+content/
+├── index.vdx           → /index.html
+├── docs.vdx            → /docs.html
+└── guides/
+    ├── setup.vdx       → /guides/setup.html
+    └── advanced.vdx    → /guides/advanced.html
+```
+
+## Layouts Directory
+
+Layouts are V source files that define the HTML structure. They receive:
+
+- `content` - The rendered page content
+- `title` - From frontmatter
+- `nav_html` - Auto-generated navigation
+
+<Callout type_="info">
+Pages with `layout = "landing"` are excluded from navigation.
+</Callout>
+
+## Components Directory
+
+Components are reusable V structs with a `render()` method. Use them in your `.vdx` files:
+
+```html
+<Callout type_="warning">
+This is a warning message.
+</Callout>
+```
+
+## Assets Directory
+
+Static files like CSS, JavaScript, and images. They're served at `/assets/`.
+
+## Dist Directory
+
+Generated HTML output. Deploy this directory to your hosting provider.

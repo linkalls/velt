@@ -1,0 +1,125 @@
++++
+layout = "default"
+title = "Components"
++++
+
+# Components
+
+Components are reusable building blocks for your pages.
+
+## Creating a Component
+
+Create a V file in the `components/` directory:
+
+```v
+// components/callout.v
+module components
+
+pub struct Callout {
+pub:
+    type_   string  // info, warning, success, error
+    content string
+}
+
+pub fn (c Callout) render() string {
+    icon := match c.type_ {
+        'info' { '💡' }
+        'warning' { '⚠️' }
+        'success' { '✅' }
+        'error' { '🚨' }
+        else { 'ℹ' }
+    }
+    return '<div class="callout callout-${c.type_}">
+        <span class="callout-icon">${icon}</span>
+        <div class="callout-content">${c.content}</div>
+    </div>'
+}
+```
+
+## Using Components
+
+Use components in your `.vdx` files with HTML-like syntax:
+
+```html
+<Callout type_="info">
+This is an informational message.
+</Callout>
+```
+
+<Callout type_="warning">
+Use `type_` with underscore because `type` is a reserved keyword in V.
+</Callout>
+
+## Component Props
+
+Props are passed as attributes. In your component struct, define public fields:
+
+```v
+pub struct MyComponent {
+pub:
+    size    string = 'medium'  // Default value
+    variant string = 'default'
+    content string             // Children content
+}
+```
+
+Then use in your `.vdx`:
+
+```html
+<MyComponent size="large" variant="primary">
+Content goes here
+</MyComponent>
+```
+
+## Built-in Components
+
+Velt projects come with these components:
+
+| Component | Description | Props |
+|-----------|-------------|-------|
+| `Callout` | Alert boxes with icons | `type_`: info, warning, success, error |
+| `Hero` | Hero section for landing pages | `title`, `subtitle` |
+
+## Children Content
+
+Content between tags becomes the `content` field:
+
+```html
+<Callout type_="info">
+This text becomes the content field.
+</Callout>
+```
+
+The content is automatically parsed as Markdown.
+
+## Creating Custom Components
+
+Here's a complete example of a custom component:
+
+```v
+// components/feature_card.v
+module components
+
+pub struct FeatureCard {
+pub:
+    icon    string
+    title   string
+    content string
+}
+
+pub fn (f FeatureCard) render() string {
+    return '<div class="feature-card">
+        <span class="feature-icon">${f.icon}</span>
+        <h3>${f.title}</h3>
+        <p>${f.content}</p>
+    </div>'
+}
+```
+
+Use it:
+
+```html
+<FeatureCard icon="🚀" title="Fast">
+Blazingly fast builds with V.
+</FeatureCard>
+```

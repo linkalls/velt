@@ -3,7 +3,7 @@ module main
 // import os
 import strings
 
-fn generate_v_code(segments []ParsedSegment, output_path string, layout_name string, title string) string {
+fn generate_v_code(segments []ParsedSegment, output_path string, layout_name string, title string, nav_html string) string {
     mut sb := strings.new_builder(1000)
 
     sb.writeln('module main')
@@ -62,10 +62,11 @@ fn generate_v_code(segments []ParsedSegment, output_path string, layout_name str
         }
     }
 
+    // Escape nav_html for V string
+    nav_escaped := nav_html.replace('\\', '\\\\').replace("'", "\\'")
     sb.writeln('')
-    // Pass both content and title to layout
-    sb.writeln("    full_html := layouts.${layout_name}(buffer.join('\\n'), '${title}')")
-    // os.write_file requires path relative to CWD.
+    // Pass content, title, and navigation to layout
+    sb.writeln("    full_html := layouts.${layout_name}(buffer.join('\\n'), '${title}', '${nav_escaped}')")    // os.write_file requires path relative to CWD.
     // When running from `demo/`, `demo/dist/index.html` implies `demo/demo/dist/index.html`?
     // No.
     // But `main.v` generates the path as `demo/dist/index.html`.

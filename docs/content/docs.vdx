@@ -1,53 +1,71 @@
 +++
 layout = "default"
-title = "Documentation"
+title = "Introduction"
 +++
 
-# Documentation
+# Velt Documentation
 
-Welcome to the Velt documentation.
+Welcome to the official documentation for **Velt** - a type-safe, zero-runtime JS static site generator built with V.
 
 <Callout type_="info">
 **Velt** is currently in active development. APIs might change.
 </Callout>
 
+## What is Velt?
+
+Velt is a modern static site generator that combines:
+
+- **Type-safe templates** - Layouts and components written in V
+- **Zero runtime JS** - Pure static HTML output
+- **Blazingly fast** - V's compilation speed
+- **Live reload** - Instant updates during development
+
 ## Getting Started
 
-### Prerequisites
+New to Velt? Start here:
 
-You need to have [V](https://vlang.io) installed on your system.
+1. [Installation](getting-started/installation.html) - Set up Velt on your system
+2. [Quick Start](getting-started/quick-start.html) - Create your first project
+3. [Project Structure](getting-started/project-structure.html) - Understand the file layout
 
-### Installation
+## Guides
 
-Clone the repository and build the CLI tool.
+Learn how to use Velt effectively:
 
-```bash
-git clone https://github.com/vlang/velt
-cd velt
-v -o velt src/
+- [Layouts](guides/layouts.html) - Customize your site's HTML structure
+- [Components](guides/components.html) - Create reusable building blocks
+- [Styling](guides/styling.html) - Style your site with CSS
+
+## Reference
+
+Detailed technical documentation:
+
+- [CLI Reference](reference/cli.html) - All available commands
+- [Frontmatter](reference/frontmatter.html) - Page metadata options
+
+## Features
+
+### VDX Files
+
+Mix Markdown with V components:
+
+```markdown
+# Hello World
+
+<Callout type_="info">
+This is rendered by a V component!
+</Callout>
 ```
 
-## Creating a Project
+### Auto Navigation
 
-Use the `new` command to scaffold a project.
+Sidebar navigation is generated automatically from your content files. Subdirectories become collapsible sections.
 
-```bash
-./velt new my-website
-cd my-website
-```
+### Dark Mode
 
-## Running the Server
+Built-in dark mode support with localStorage persistence.
 
-Start the development server with live reload.
+## Support
 
-```bash
-../velt dev
-```
-
-Open `http://localhost:3000` in your browser.
-
-## Building for Production
-
-```bash
-../velt build
-```
+- [GitHub Issues](https://github.com/vlang/velt/issues) - Report bugs
+- [GitHub Discussions](https://github.com/vlang/velt/discussions) - Ask questions

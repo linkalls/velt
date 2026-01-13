@@ -1,8 +1,8 @@
 module layouts
 
-pub fn default(content string, title string) string {
-    page_title := if title.len > 0 { '${title} - Velt' } else { 'Velt Docs' }
-    return '
+pub fn default(content string, title string, nav_html string) string {
+	page_title := if title.len > 0 { '${title} - Velt' } else { 'Velt Docs' }
+	return '
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -23,15 +23,18 @@ pub fn default(content string, title string) string {
 <body>
     <div class="layout">
         <aside class="sidebar">
-            <a href="index.html" class="brand">Velt</a>
+            <a href="index.html" class="brand">
+                <span class="brand-icon">🚀</span> Velt
+            </a>
             <nav>
-                <a href="index.html" class="active">Introduction</a>
-                <a href="#">Getting Started</a>
-                <a href="#">Components</a>
+                ${nav_html}
             </nav>
         </aside>
         <div class="main-content">
             <header class="topbar">
+                <button class="mobile-menu-toggle" aria-label="Toggle Menu">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12h18M3 6h18M3 18h18"/></svg>
+                </button>
                 <div class="search-placeholder">Search documentation...</div>
                 <button id="theme-toggle" aria-label="Toggle Dark Mode">
                     <!-- Sun Icon -->
@@ -55,6 +58,15 @@ pub fn default(content string, title string) string {
             const isDark = document.documentElement.classList.contains("dark");
             localStorage.setItem("theme", isDark ? "dark" : "light");
         });
+
+        // Mobile menu toggle
+        const menuToggle = document.querySelector(".mobile-menu-toggle");
+        const sidebar = document.querySelector(".sidebar");
+        if (menuToggle) {
+            menuToggle.addEventListener("click", () => {
+                sidebar.classList.toggle("open");
+            });
+        }
     </script>
 </body>
 </html>

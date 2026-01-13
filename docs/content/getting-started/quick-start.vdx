@@ -1,0 +1,72 @@
++++
+layout = "default"
+title = "Quick Start"
++++
+
+# Quick Start
+
+Get up and running with Velt in minutes.
+
+## Create a New Project
+
+```bash
+./velt new my-website
+cd my-website
+```
+
+This creates a new Velt project with the following structure:
+
+```
+my-website/
+├── content/
+│   └── index.vdx
+├── layouts/
+│   └── default.v
+├── components/
+│   └── callout.v
+└── assets/
+    └── style.css
+```
+
+## Start Development Server
+
+```bash
+../velt dev
+```
+
+Open [http://localhost:3000](http://localhost:3000) in your browser.
+
+<Callout type_="info">
+The dev server includes **live reload** - changes are reflected instantly!
+</Callout>
+
+## Create Your First Page
+
+Create a new file `content/about.vdx`:
+
+```markdown
++++
+layout = "default"
+title = "About"
++++
+
+# About Us
+
+Welcome to our website built with Velt!
+```
+
+The page will automatically appear in the navigation.
+
+## Build for Production
+
+```bash
+../velt build
+```
+
+This generates static HTML files in the `dist/` directory, ready for deployment.
+
+## Next Steps
+
+- [Project Structure](project-structure.html) - Understand the file layout
+- [Layouts](../guides/layouts.html) - Customize your site's layout
+- [Components](../guides/components.html) - Create reusable components

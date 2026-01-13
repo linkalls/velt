@@ -1,0 +1,86 @@
++++
+layout = "default"
+title = "CLI Reference"
++++
+
+# CLI Reference
+
+Complete reference for Velt command-line interface.
+
+## Commands
+
+### `velt new <name>`
+
+Create a new Velt project.
+
+```bash
+./velt new my-website
+```
+
+Creates a new directory with:
+- `content/index.vdx` - Sample page
+- `layouts/default.v` - Default layout
+- `components/callout.v` - Sample component
+- `assets/style.css` - Base styles
+
+### `velt dev`
+
+Start the development server.
+
+```bash
+./velt dev
+```
+
+Options:
+- Default port: `3000`
+- Live reload enabled
+- Watches `content/` for changes
+
+<Callout type_="info">
+The dev server automatically rebuilds when you save changes.
+</Callout>
+
+### `velt build`
+
+Build the site for production.
+
+```bash
+./velt build
+```
+
+Generates static HTML files in `dist/` directory.
+
+### `velt serve`
+
+Start a simple HTTP server for the built site.
+
+```bash
+./velt serve
+```
+
+Serves the `dist/` directory without live reload.
+
+## Environment Variables
+
+| Variable | Description | Default |
+|----------|-------------|---------|
+| `V_EXE` | Path to V compiler | `v` |
+
+## Exit Codes
+
+| Code | Description |
+|------|-------------|
+| `0` | Success |
+| `1` | Error (see output) |
+
+## Examples
+
+```bash
+# Create and develop
+./velt new blog
+cd blog
+../velt dev
+
+# Build for deployment
+../velt build
+```

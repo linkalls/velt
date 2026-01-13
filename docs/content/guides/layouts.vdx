@@ -1,0 +1,76 @@
++++
+layout = "default"
+title = "Layouts"
++++
+
+# Layouts
+
+Layouts are V source files that define the HTML structure of your pages.
+
+## Creating a Layout
+
+Create a file in the `layouts/` directory:
+
+```v
+// layouts/default.v
+module layouts
+
+pub fn default(content string, title string, nav_html string) string {
+    page_title := if title.len > 0 { '${title} - Velt' } else { 'Velt' }
+    return '
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>${page_title}</title>
+    <link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+    <nav>${nav_html}</nav>
+    <main>${content}</main>
+</body>
+</html>
+    '
+}
+```
+
+## Layout Parameters
+
+Every layout function receives three parameters:
+
+| Parameter | Description |
+|-----------|-------------|
+| `content` | The rendered HTML content of the page |
+| `title` | The title from page frontmatter |
+| `nav_html` | Auto-generated navigation HTML |
+
+## Using a Layout
+
+Specify the layout in your page's frontmatter:
+
+```markdown
++++
+layout = "default"
+title = "My Page"
++++
+```
+
+## Special Layouts
+
+### Landing Layout
+
+Pages with `layout = "landing"` are excluded from navigation. Use this for:
+
+- Home pages
+- Marketing pages
+- Custom landing pages
+
+<Callout type_="info">
+The landing layout does not receive navigation since it's meant to be standalone.
+</Callout>
+
+## Tips
+
+- Keep layouts DRY - extract common elements
+- Use V's string interpolation `${}` for dynamic content
+- Include dark mode support with CSS variables

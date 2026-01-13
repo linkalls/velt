@@ -1,6 +1,6 @@
 module layouts
 
-pub fn landing(content string, title string) string {
+pub fn landing(content string, title string, nav_html string) string {
     return '
 <!DOCTYPE html>
 <html lang="en">
