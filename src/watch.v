@@ -48,14 +48,32 @@ fn build_one(file string) {
 		return
 	}
 
-	segments := parse_velt_file(content)
+	// Parse frontmatter (TOML between +++ markers)
+	mut layout := 'default'
+	mut body := content
+	
+	if content.starts_with('+++') {
+		// Find closing +++
+		parts := content.split('+++')
+		if parts.len >= 3 {
+			frontmatter := parts[1].trim_space()
+			// Parse layout from frontmatter
+			for line in frontmatter.split_into_lines() {
+				if line.contains('layout') && line.contains('=') {
+					// Extract value: layout = "landing"
+					value := line.split('=')[1].trim_space().replace('"', '').replace("'", '')
+					layout = value
+					break
+				}
+			}
+			// Body is everything after the second +++
+			body = parts[2..].join('+++').trim_space()
+		}
+	}
+
+	segments := parse_velt_file(body)
 
 	// Output path relative to dist/
-	// file is like content/index.vdx
-	// we want dist/index.html
-	// If file is content/sub/page.vdx, we want dist/sub/page.html
-
-	// naive replacement (normalize path separators for cross-platform):
 	normalized_file := file.replace('\\', '/')
 	filename := normalized_file.replace('content/', '').replace('.vdx', '.html')
 	output_path := 'dist/${filename}'
@@ -66,7 +84,7 @@ fn build_one(file string) {
 		os.mkdir_all(output_dir) or {}
 	}
 
-	code := generate_v_code(segments, output_path, 'default')
+	code := generate_v_code(segments, output_path, layout)
 
 	gen_file := 'build_gen.v'
 	os.write_file(gen_file, code) or {
@@ -75,11 +93,9 @@ fn build_one(file string) {
 	}
 
 	// Run V
-	// Use env var or default `v`
 	v_exe := os.getenv('V_EXE')
 	v_cmd := if v_exe != '' { v_exe } else { 'v' }
 
-	// We run in current directory.
 	cmd := '${v_cmd} run ${gen_file}'
 	res := os.execute(cmd)
 	if res.exit_code != 0 {
@@ -89,3 +105,4 @@ fn build_one(file string) {
 		println('Successfully built ${output_path}')
 	}
 }
+
