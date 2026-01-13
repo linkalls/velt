@@ -5,7 +5,7 @@ dist/
 vlang/
 src.exe
 velt
-docs/dist/
+docs/
 docs/build_gen.v
 velt.exe
 src/src
