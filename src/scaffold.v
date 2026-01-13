@@ -65,7 +65,9 @@ pub:
 fn get_landing_layout_code() string {
     return "module layouts
 
-pub fn landing(content string) string {
+pub fn landing(content string, title string, nav_html string) string {
+    _ = title  // unused but kept for API consistency
+    _ = nav_html
     return '
 <!DOCTYPE html>
 <html lang=\"en\">
@@ -182,17 +184,17 @@ Edit `content/docs.vdx` to start writing your documentation.
 fn get_default_layout_code() string {
     return "module layouts
 
-pub fn default(content string) string {
+pub fn default(content string, title string, nav_html string) string {
+    page_title := if title.len > 0 { '\${title} - Velt' } else { 'Velt Docs' }
     return '
 <!DOCTYPE html>
 <html lang=\"en\">
 <head>
     <meta charset=\"UTF-8\">
     <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">
-    <title>Velt Docs</title>
+    <title>\${page_title}</title>
     <link rel=\"stylesheet\" href=\"assets/style.css\">
     <script>
-        // Check local storage or preference
         const savedTheme = localStorage.getItem(\"theme\");
         if (savedTheme === \"dark\" || (!savedTheme && window.matchMedia(\"(prefers-color-scheme: dark)\").matches)) {
             document.documentElement.classList.add(\"dark\");
@@ -206,19 +208,15 @@ pub fn default(content string) string {
         <aside class=\"sidebar\">
             <div class=\"brand\">Velt Docs</div>
             <nav>
-                <a href=\"index.html\" class=\"active\">Introduction</a>
-                <a href=\"#\">Getting Started</a>
-                <a href=\"#\">Components</a>
+                \${nav_html}
             </nav>
         </aside>
         <div class=\"main-content\">
             <header class=\"topbar\">
                 <div class=\"search-placeholder\">Search documentation...</div>
                 <button id=\"theme-toggle\" aria-label=\"Toggle Dark Mode\">
-                    <!-- Sun Icon -->
-                    <svg class=\"sun-icon\" xmlns=\"http://www.w3.org/2000/svg\" width=\"20\" height=\"20\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><circle cx=\"12\" cy=\"12\" r=\"5\"/><path d=\"M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42\"/></svg>
-                    <!-- Moon Icon -->
-                    <svg class=\"moon-icon\" xmlns=\"http://www.w3.org/2000/svg\" width=\"20\" height=\"20\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z\"/></svg>
+                    <svg class=\"sun-icon\" xmlns=\"http://www.w3.org/2000/svg\" width=\"20\" height=\"20\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\"><circle cx=\"12\" cy=\"12\" r=\"5\"/><path d=\"M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42\"/></svg>
+                    <svg class=\"moon-icon\" xmlns=\"http://www.w3.org/2000/svg\" width=\"20\" height=\"20\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\"><path d=\"M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z\"/></svg>
                 </button>
             </header>
             <main class=\"content-area\">
