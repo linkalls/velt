@@ -1,0 +1,9 @@
+# Advanced Velt
+
+<Counter start={10} max={100} />
+
+<Alert type_="warning">
+**Warning:** This is inside an Alert component!
+</Alert>
+
+End.
