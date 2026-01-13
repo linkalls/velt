@@ -22,7 +22,7 @@ pub fn landing(content string) string {
             <span>🚀</span> Velt
         </a>
         <div class="navbar-links">
-            <a href="docs.html">Docs</a>
+            <a href="./docs.html">Docs</a>
             <a href="#features">Features</a>
             <a href="https://github.com">GitHub</a>
         </div>

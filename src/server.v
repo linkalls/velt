@@ -2,7 +2,7 @@ module main
 
 import veb
 import os
-import net.http as _
+// import net.http as _
 // import markdown
 
 // App struct with veb.StaticHandler embedded FIRST
@@ -19,22 +19,31 @@ pub struct Context {
 
 pub fn (mut app App) notify_reload() {
 	select {
-		app.reload_chan <- true { println('[server] Sending reload signal...') }
-		else { println('[server] No listeners for reload.') }
+		app.reload_chan <- true {
+			println('[server] Sending reload signal...')
+		}
+		else {
+			println('[server] No listeners for reload.')
+		}
 	}
 }
 
 // ... (structs unchanged)
 
-// SSE Route for live reload
+// Polling endpoint for live reload - returns immediately
+// Client polls this endpoint periodically to check for reload signal
 @['/_velt_reload']
-pub fn (app &App) reload_event(mut ctx Context) veb.Result {
-	ctx.set_content_type('text/event-stream')
-	ctx.set_header(.cache_control, 'no-cache')
-	ctx.set_header(.connection, 'keep-alive')
-
-	_ := <-app.reload_chan
-	return ctx.ok('data: reload\n\n')
+pub fn (mut app App) reload_event(mut ctx Context) veb.Result {
+	// Non-blocking check for reload signal
+	select {
+		_ := <-app.reload_chan {
+			return ctx.ok('reload')
+		}
+		else {
+			return ctx.ok('ok')
+		}
+	}
+	return ctx.ok('ok') // unreachable
 }
 
 // Index route
@@ -62,18 +71,43 @@ pub fn (app &App) page(mut ctx Context, page string) veb.Result {
 }
 
 fn serve_page(mut ctx Context, name string) veb.Result {
-	vdx_file := 'content/${name}.vdx'
+	// First check if pre-built HTML exists
+	html_file := 'dist/${name}.html'
 
-	if !os.exists(vdx_file) {
-		return ctx.not_found()
+	mut html := ''
+	if os.exists(html_file) {
+		// Use pre-built HTML (built by watcher)
+		html = os.read_file(html_file) or {
+			eprintln('Failed to read ${html_file}: ${err}')
+			return ctx.html('<h1>500 - Server Error</h1>')
+		}
+	} else {
+		// Fallback: check if source exists and build it
+		vdx_file := 'content/${name}.vdx'
+		if !os.exists(vdx_file) {
+			return ctx.not_found()
+		}
+
+		println('[velt] Building on demand: ${vdx_file}')
+		build_one(vdx_file)
+
+		html = os.read_file(html_file) or {
+			eprintln('Failed to read built file ${html_file}: ${err}')
+			return ctx.html('<h1>500 - Server Error</h1>')
+		}
 	}
 
-	println('[velt] Building: ${vdx_file}')
-	mut html := build_page_with_markdown(vdx_file)
-
-	// Inject reload script
+	// Inject reload script - use polling instead of SSE
 	reload_script := '<script>
-	new EventSource("/_velt_reload").onmessage = () => location.reload();
+	(function() {
+		var checkReload = function() {
+			fetch("/_velt_reload").then(function(r) { return r.text(); }).then(function(t) {
+				if (t === "reload") location.reload();
+				else setTimeout(checkReload, 500);
+			}).catch(function() { setTimeout(checkReload, 1000); });
+		};
+		checkReload();
+	})();
 	</script></body>'
 
 	html = html.replace('</body>', reload_script)
@@ -81,29 +115,11 @@ fn serve_page(mut ctx Context, name string) veb.Result {
 	return ctx.html(html)
 }
 
-// Helper to build page on the fly
-fn build_page_with_markdown(path string) string {
-	build_one(path)
-	
-	// Calculate expected output path
-	// This mirrors logic in build_one
-	normalized := path.replace('\\', '/')
-	filename := normalized.replace('content/', '').replace('.vdx', '.html')
-	out_path := 'dist/${filename}'
-	
-	return os.read_file(out_path) or {
-		eprintln('Failed to read built file ${out_path}: ${err}')
-		return 'Error building page'
-	}
-}
-
 fn cmd_serve(port int, app &App) ! {
 	println('Starting Velt Dev Server at http://localhost:${port}')
 	// Handle static assets at /assets route
-	// Note: We need to cast to mut because mount_static_folder_at modifies app,
-	// but veb.run takes it too.
-	// Actually, let's just assume app is already set up or we modify it here.
 	mut mutable_app := unsafe { app }
 	mutable_app.mount_static_folder_at('assets', '/assets')!
-	veb.run[App, Context](mut mutable_app, port)
+	// Use run_at for multi-threaded server
+	veb.run_at[App, Context](mut mutable_app, host: '', port: port)!
 }

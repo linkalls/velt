@@ -3,7 +3,7 @@ module main
 import os
 import time
 
-fn watch_and_rebuild(cb fn()) {
+fn watch_and_rebuild(cb fn ()) {
 	println('Starting watcher...')
 
 	build_all()
@@ -52,7 +52,7 @@ fn build_one(file string) {
 	// Parse frontmatter (TOML between +++ markers)
 	mut layout := 'default'
 	mut body := content
-	
+
 	if content.starts_with('+++') {
 		// Find closing +++
 		parts := content.split('+++')
@@ -62,7 +62,8 @@ fn build_one(file string) {
 			for line in frontmatter.split_into_lines() {
 				if line.contains('layout') && line.contains('=') {
 					// Extract value: layout = "landing"
-					value := line.split('=')[1].trim_space().replace('"', '').replace("'", '')
+					value := line.split('=')[1].trim_space().replace('"', '').replace("'",
+						'')
 					layout = value
 					break
 				}
@@ -87,7 +88,12 @@ fn build_one(file string) {
 
 	code := generate_v_code(segments, output_path, layout)
 
-	gen_file := 'build_gen.v'
+	// Use unique temp file name based on source file to avoid race conditions
+	// when building multiple files concurrently
+	base_name := filename.replace('/', '_').replace('.html', '')
+	gen_file := 'build_gen_${base_name}.v'
+	gen_exe := 'build_gen_${base_name}.exe'
+
 	os.write_file(gen_file, code) or {
 		println('Error writing gen file: ${err}')
 		return
@@ -105,5 +111,8 @@ fn build_one(file string) {
 	} else {
 		println('Successfully built ${output_path}')
 	}
-}
 
+	// Clean up temp files
+	os.rm(gen_file) or {}
+	os.rm(gen_exe) or {}
+}
