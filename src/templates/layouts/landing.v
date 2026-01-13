@@ -1,7 +1,7 @@
 module layouts
 
 pub fn landing(content string, title string, nav_html string) string {
-    _ = title  // unused but kept for API consistency
+    _ = title   // unused but kept for API consistency
     _ = nav_html
     return '
 <!DOCTYPE html>
