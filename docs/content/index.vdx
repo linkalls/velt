@@ -1,0 +1,21 @@
++++
+layout = "landing"
+title = "Velt - The Static Site Generator"
++++
+
+<Hero
+    title="Velt"
+    subtitle="Type-safe, zero-runtime JS, and blazingly fast. Built with V."
+    btn_text="Get Started"
+    btn_link="docs.html"
+/>
+
+<FeaturesSection />
+
+## Why Velt?
+
+Velt takes a different approach to static site generation. Instead of using JavaScript frameworks like React or Vue, it uses **V** - a simple, fast, and safe language.
+
+- **No node_modules hell**: Dependencies are managed by V.
+- **Tiny footprint**: The generated site is just HTML and CSS.
+- **Developer Experience**: Use a typed language for your components.

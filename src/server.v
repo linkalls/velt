@@ -2,6 +2,7 @@ module main
 
 import veb
 import os
+import net.http as _
 // import markdown
 
 // App struct with veb.StaticHandler embedded FIRST
@@ -29,8 +30,8 @@ pub fn (mut app App) notify_reload() {
 @['/_velt_reload']
 pub fn (app &App) reload_event(mut ctx Context) veb.Result {
 	ctx.set_content_type('text/event-stream')
-	ctx.set_header('Cache-Control', 'no-cache')
-	ctx.set_header('Connection', 'keep-alive')
+	ctx.set_header(.cache_control, 'no-cache')
+	ctx.set_header(.connection, 'keep-alive')
 
 	_ := <-app.reload_chan
 	return ctx.ok('data: reload\n\n')

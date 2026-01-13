@@ -1,0 +1,53 @@
++++
+layout = "default"
+title = "Documentation"
++++
+
+# Documentation
+
+Welcome to the Velt documentation.
+
+<Callout type_="info">
+**Velt** is currently in active development. APIs might change.
+</Callout>
+
+## Getting Started
+
+### Prerequisites
+
+You need to have [V](https://vlang.io) installed on your system.
+
+### Installation
+
+Clone the repository and build the CLI tool.
+
+```bash
+git clone https://github.com/vlang/velt
+cd velt
+v -o velt src/
+```
+
+## Creating a Project
+
+Use the `new` command to scaffold a project.
+
+```bash
+./velt new my-website
+cd my-website
+```
+
+## Running the Server
+
+Start the development server with live reload.
+
+```bash
+../velt dev
+```
+
+Open `http://localhost:3000` in your browser.
+
+## Building for Production
+
+```bash
+../velt build
+```
