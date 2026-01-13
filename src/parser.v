@@ -27,24 +27,37 @@ fn parse_velt_file(content string) []ParsedSegment {
         code_fence_opt := content.index_after('```', index)
         code_fence := code_fence_opt or { -1 }
 
+        // Find single backtick (inline code) - but not triple backtick
+        mut inline_code := -1
+        inline_code_opt := content.index_after('`', index)
+        if candidate := inline_code_opt {
+            // Make sure it's not part of a triple backtick
+            if code_fence == -1 || candidate < code_fence || candidate > code_fence + 2 {
+                inline_code = candidate
+            }
+        }
+
         mut next_event := -1
         mut is_tag := false
         mut is_fence := false
+        mut is_inline := false
 
-        if tag_start != -1 && code_fence != -1 {
-            if tag_start < code_fence {
-                next_event = tag_start
-                is_tag = true
-            } else {
-                next_event = code_fence
-                is_fence = true
-            }
-        } else if tag_start != -1 {
+        // Find the earliest event
+        if tag_start != -1 {
             next_event = tag_start
             is_tag = true
-        } else if code_fence != -1 {
+        }
+        if code_fence != -1 && (next_event == -1 || code_fence < next_event) {
             next_event = code_fence
+            is_tag = false
             is_fence = true
+            is_inline = false
+        }
+        if inline_code != -1 && (next_event == -1 || inline_code < next_event) {
+            next_event = inline_code
+            is_tag = false
+            is_fence = false
+            is_inline = true
         }
 
         if next_event == -1 {
@@ -66,6 +79,25 @@ fn parse_velt_file(content string) []ParsedSegment {
                     content: content[index..fence_end+3]
                 }
                 index = fence_end + 3
+            } else {
+                segments << ParsedSegment{
+                    is_component: false
+                    content: content[index..]
+                }
+                break
+            }
+        } else if is_inline {
+            // Find end of inline code (next single backtick)
+            inline_end_opt := content.index_after('`', next_event + 1)
+            inline_end := inline_end_opt or { -1 }
+
+            if inline_end != -1 {
+                // Include everything from current index up to closing backtick
+                segments << ParsedSegment{
+                    is_component: false
+                    content: content[index..inline_end+1]
+                }
+                index = inline_end + 1
             } else {
                 segments << ParsedSegment{
                     is_component: false
