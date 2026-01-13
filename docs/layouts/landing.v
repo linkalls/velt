@@ -8,7 +8,7 @@ pub fn landing(content string, title string, nav_html string) string {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Velt - Static Site Generator</title>
-    <link rel="stylesheet" href="assets/landing.css">
+    <link rel="stylesheet" href="/assets/landing.css">
     <script>
         const savedTheme = localStorage.getItem("theme");
         if (savedTheme === "dark" || (!savedTheme && window.matchMedia("(prefers-color-scheme: dark)").matches)) {
@@ -39,7 +39,7 @@ pub fn landing(content string, title string, nav_html string) string {
     </main>
 
     <footer class="landing-footer">
-        <p>Built with <a href="https://github.com/vlang/v">V</a> • Powered by <a href="#">Velt</a></p>
+        <p>Built with <a href="https://github.com/vlang/v">V</a> • Powered by <a href="https://github.com/linkalls/velt">Velt</a></p>
     </footer>
 
     <script>

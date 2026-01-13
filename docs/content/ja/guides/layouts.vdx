@@ -1,0 +1,70 @@
++++
+layout = "default"
+title = "レイアウト"
++++
+
+# レイアウト
+
+レイアウトはページのHTML構造を定義するVソースファイルです。
+
+## レイアウトの作成
+
+`layouts/`ディレクトリにファイルを作成：
+
+```v
+// layouts/default.v
+module layouts
+
+pub fn default(content string, title string, nav_html string) string {
+    page_title := if title.len > 0 { '${title} - Velt' } else { 'Velt' }
+    return '
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <title>${page_title}</title>
+    <link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+    <nav>${nav_html}</nav>
+    <main>${content}</main>
+</body>
+</html>
+    '
+}
+```
+
+## レイアウトパラメータ
+
+すべてのレイアウト関数は3つのパラメータを受け取ります：
+
+| パラメータ | 説明 |
+|-----------|------|
+| `content` | ページのレンダリングされたHTMLコンテンツ |
+| `title` | ページフロントマターからのタイトル |
+| `nav_html` | 自動生成されたナビゲーションHTML |
+
+## レイアウトの使用
+
+ページのフロントマターでレイアウトを指定：
+
+```markdown
++++
+layout = "default"
+title = "マイページ"
++++
+```
+
+## 特別なレイアウト
+
+### ランディングレイアウト
+
+`layout = "landing"`のページはナビゲーションから除外されます。以下に使用：
+
+- ホームページ
+- マーケティングページ
+- カスタムランディングページ
+
+<Callout type_="info">
+ランディングレイアウトはスタンドアロン用なのでナビゲーションを受け取りません。
+</Callout>

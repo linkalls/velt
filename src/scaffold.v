@@ -102,7 +102,7 @@ pub fn landing(content string) string {
     \${content}
     
     <footer class=\"landing-footer\">
-        <p>Built with <a href=\"https://github.com/vlang/v\">V</a> • Powered by <a href=\"#\">Velt</a></p>
+        <p>Built with <a href=\"https://github.com/vlang/v\">V</a> • Powered by <a href=\"https://github.com/linkalls/velt\">Velt</a></p>
     </footer>
     
     <script>

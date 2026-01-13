@@ -50,25 +50,24 @@ This is an informational message.
 Use `type_` with underscore because `type` is a reserved keyword in V.
 </Callout>
 
-## Component Props
+## Component Structure
 
-Props are passed as attributes. In your component struct, define public fields:
+Every component needs:
+
+1. **A struct** with public fields for props
+2. **A render() method** that returns HTML string
 
 ```v
-pub struct MyComponent {
+pub struct ComponentName {
 pub:
-    size    string = 'medium'  // Default value
-    variant string = 'default'
-    content string             // Children content
+    prop1   string
+    prop2   int = 10  // Default value
+    content string    // Children content
 }
-```
 
-Then use in your `.vdx`:
-
-```html
-<MyComponent size="large" variant="primary">
-Content goes here
-</MyComponent>
+pub fn (c ComponentName) render() string {
+    return '<div>...</div>'
+}
 ```
 
 ## Built-in Components
@@ -92,34 +91,31 @@ This text becomes the content field.
 
 The content is automatically parsed as Markdown.
 
-## Creating Custom Components
+## Styling Components
 
-Here's a complete example of a custom component:
+Add CSS for your components in `assets/style.css`:
 
-```v
-// components/feature_card.v
-module components
-
-pub struct FeatureCard {
-pub:
-    icon    string
-    title   string
-    content string
+```css
+.callout {
+    padding: 1rem;
+    border-radius: 8px;
+    margin: 1rem 0;
 }
 
-pub fn (f FeatureCard) render() string {
-    return '<div class="feature-card">
-        <span class="feature-icon">${f.icon}</span>
-        <h3>${f.title}</h3>
-        <p>${f.content}</p>
-    </div>'
+.callout-info {
+    background: rgba(59, 130, 246, 0.1);
+    border-left: 4px solid #3b82f6;
+}
+
+.callout-warning {
+    background: rgba(245, 158, 11, 0.1);
+    border-left: 4px solid #f59e0b;
 }
 ```
 
-Use it:
+## Best Practices
 
-```html
-<FeatureCard icon="🚀" title="Fast">
-Blazingly fast builds with V.
-</FeatureCard>
-```
+- **Keep components focused** - One component, one purpose
+- **Use semantic HTML** - Accessibility matters
+- **Default values** - Provide sensible defaults for optional props
+- **Document your components** - Add comments explaining usage

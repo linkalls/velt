@@ -52,7 +52,7 @@ pub fn (app &App) index(mut ctx Context) veb.Result {
 	return serve_page(mut ctx, 'index')
 }
 
-// Dynamic page route
+// Dynamic page route (1 level)
 @['/:page']
 pub fn (app &App) page(mut ctx Context, page string) veb.Result {
 	// Skip asset requests that might fall through
@@ -67,6 +67,28 @@ pub fn (app &App) page(mut ctx Context, page string) veb.Result {
 		page
 	}
 
+	return serve_page(mut ctx, page_name)
+}
+
+// Nested route (2 levels) - e.g., /getting-started/installation or /ja/docs
+@['/:dir/:page']
+pub fn (app &App) nested_page(mut ctx Context, dir string, page string) veb.Result {
+	page_name := if page.ends_with('.html') {
+		'${dir}/' + page.replace('.html', '')
+	} else {
+		'${dir}/${page}'
+	}
+	return serve_page(mut ctx, page_name)
+}
+
+// Deeply nested route (3 levels) - e.g., /ja/getting-started/installation
+@['/:dir/:subdir/:page']
+pub fn (app &App) deep_nested_page(mut ctx Context, dir string, subdir string, page string) veb.Result {
+	page_name := if page.ends_with('.html') {
+		'${dir}/${subdir}/' + page.replace('.html', '')
+	} else {
+		'${dir}/${subdir}/${page}'
+	}
 	return serve_page(mut ctx, page_name)
 }
 

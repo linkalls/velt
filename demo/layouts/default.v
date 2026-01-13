@@ -43,7 +43,7 @@ pub fn default(content string) string {
                 ${content}
             </main>
             <footer>
-                Powered by <a href="https://github.com/vlang/v">Velt</a>
+                Powered by <a href="https://github.com/linkalls/velt">Velt</a>
             </footer>
         </div>
     </div>

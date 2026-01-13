@@ -105,10 +105,10 @@ fn collect_nav_items(files []string) string {
 			if dir_name !in dirs {
 				dirs[dir_name] = []string{}
 			}
-			dirs[dir_name] << '<a href="${html_name}">${title}</a>'
+			dirs[dir_name] << '<a href="/${html_name}">${title}</a>'
 		} else {
 			// Root level
-			nav_items << '<a href="${html_name}">${title}</a>'
+			nav_items << '<a href="/${html_name}">${title}</a>'
 		}
 	}
 	

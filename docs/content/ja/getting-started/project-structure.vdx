@@ -1,0 +1,67 @@
++++
+layout = "default"
+title = "プロジェクト構造"
++++
+
+# プロジェクト構造
+
+Veltプロジェクトの構成を理解しましょう。
+
+## ディレクトリレイアウト
+
+典型的なVeltプロジェクトは以下の構造を持ちます：
+
+```
+my-project/
+├── content/          # ページ（.vdxファイル）
+│   ├── index.vdx
+│   ├── about.vdx
+│   └── docs/         # ネストディレクトリはナビセクションになる
+│       └── intro.vdx
+├── layouts/          # Vレイアウトテンプレート
+│   ├── default.v
+│   └── landing.v
+├── components/       # 再利用可能なVコンポーネント
+│   ├── callout.v
+│   └── hero.v
+├── assets/           # 静的ファイル（CSS、画像など）
+│   └── style.css
+└── dist/             # 生成されたHTML出力
+```
+
+## コンテンツディレクトリ
+
+`content/`ディレクトリには`.vdx`ファイルが含まれます。各ファイルが1ページになります。
+
+### ネストディレクトリ
+
+サブディレクトリはナビゲーションセクションを作成します：
+
+```
+content/
+├── index.vdx           → /index.html
+├── docs.vdx            → /docs.html
+└── guides/
+    ├── setup.vdx       → /guides/setup.html
+    └── advanced.vdx    → /guides/advanced.html
+```
+
+## レイアウトディレクトリ
+
+レイアウトはHTML構造を定義するVソースファイルです。
+
+<Callout type_="info">
+`layout = "landing"`のページはナビゲーションから除外されます。
+</Callout>
+
+## コンポーネントディレクトリ
+
+コンポーネントは`render()`メソッドを持つ再利用可能なV構造体です。
+
+## アセットディレクトリ
+
+CSS、JavaScript、画像などの静的ファイル。`/assets/`で提供されます。
+
+## Distディレクトリ
+
+生成されたHTML出力。このディレクトリをホスティングプロバイダにデプロイします。

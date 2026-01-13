@@ -1,0 +1,81 @@
++++
+layout = "default"
+title = "スタイリング"
++++
+
+# スタイリング
+
+Veltサイトのスタイリング方法を学びます。
+
+## CSSファイル
+
+CSSファイルを`assets/`ディレクトリに配置：
+
+```
+assets/
+├── style.css      # メインスタイル
+└── components.css # コンポーネントスタイル
+```
+
+レイアウトでリンク：
+
+```html
+<link rel="stylesheet" href="assets/style.css">
+```
+
+## CSS変数（テーマ）
+
+一貫したテーマにCSS変数を使用：
+
+```css
+:root {
+    /* カラー */
+    --color-primary: #6366f1;
+    --color-text: #18181b;
+    --color-bg: #ffffff;
+    
+    /* タイポグラフィ */
+    --font-sans: 'Inter', sans-serif;
+    --font-mono: 'JetBrains Mono', monospace;
+}
+```
+
+## ダークモード
+
+Veltテンプレートにはダークモードサポートが含まれています：
+
+```css
+html.dark {
+    --color-text: #fafafa;
+    --color-bg: #09090b;
+}
+```
+
+JavaScriptで切り替え：
+
+```javascript
+document.documentElement.classList.toggle('dark');
+localStorage.setItem('theme', isDark ? 'dark' : 'light');
+```
+
+<Callout type_="success">
+ダークモードの設定は自動的にlocalStorageに保存されます。
+</Callout>
+
+## レスポンシブデザイン
+
+レスポンシブレイアウトにメディアクエリを使用：
+
+```css
+/* モバイルファースト */
+.sidebar {
+    display: none;
+}
+
+@media (min-width: 768px) {
+    .sidebar {
+        display: flex;
+        width: 280px;
+    }
+}
+```

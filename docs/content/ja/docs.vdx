@@ -1,0 +1,66 @@
++++
+layout = "default"
+title = "はじめに"
++++
+
+# Velt ドキュメント
+
+**Velt**の公式ドキュメントへようこそ - Vで構築された型安全でゼロランタイムJSの静的サイトジェネレーターです。
+
+<Callout type_="info">
+**Velt**は現在開発中です。APIは変更される可能性があります。
+</Callout>
+
+## Veltとは？
+
+Veltは以下を組み合わせた最新の静的サイトジェネレーターです：
+
+- **型安全なテンプレート** - Vで書かれたレイアウトとコンポーネント
+- **ゼロランタイムJS** - 純粋な静的HTML出力
+- **超高速** - Vのコンパイル速度
+- **ライブリロード** - 開発中の即時更新
+
+## はじめに
+
+Veltを初めて使う方はこちらから：
+
+1. [インストール](getting-started/installation.html) - システムにVeltをセットアップ
+2. [クイックスタート](getting-started/quick-start.html) - 最初のプロジェクトを作成
+3. [プロジェクト構造](getting-started/project-structure.html) - ファイルレイアウトを理解
+
+## ガイド
+
+Veltを効果的に使う方法を学ぶ：
+
+- [レイアウト](guides/layouts.html) - サイトのHTML構造をカスタマイズ
+- [コンポーネント](guides/components.html) - 再利用可能な構成要素を作成
+- [スタイリング](guides/styling.html) - CSSでサイトをスタイル
+
+## リファレンス
+
+詳細な技術ドキュメント：
+
+- [CLIリファレンス](reference/cli.html) - 利用可能なすべてのコマンド
+- [フロントマター](reference/frontmatter.html) - ページメタデータオプション
+
+## 機能
+
+### VDXファイル
+
+MarkdownとVコンポーネントを混在：
+
+```markdown
+# Hello World
+
+<Callout type_="info">
+これはVコンポーネントでレンダリングされます！
+</Callout>
+```
+
+### 自動ナビゲーション
+
+サイドバーナビゲーションはコンテンツファイルから自動生成されます。
+
+### ダークモード
+
+localStorage永続化付きの組み込みダークモードサポート。

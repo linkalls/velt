@@ -1,0 +1,66 @@
++++
+layout = "default"
+title = "クイックスタート"
++++
+
+# クイックスタート
+
+数分でVeltを使い始めましょう。
+
+## 新規プロジェクトの作成
+
+```bash
+./velt new my-website
+cd my-website
+```
+
+これにより以下の構造の新しいVeltプロジェクトが作成されます：
+
+```
+my-website/
+├── content/
+│   └── index.vdx
+├── layouts/
+│   └── default.v
+├── components/
+│   └── callout.v
+└── assets/
+    └── style.css
+```
+
+## 開発サーバーの起動
+
+```bash
+../velt dev
+```
+
+ブラウザで[http://localhost:3000](http://localhost:3000)を開きます。
+
+<Callout type_="info">
+devサーバーには**ライブリロード**が含まれています - 変更は即座に反映されます！
+</Callout>
+
+## 最初のページを作成
+
+`content/about.vdx`ファイルを作成：
+
+```markdown
++++
+layout = "default"
+title = "概要"
++++
+
+# 私たちについて
+
+Veltで構築されたウェブサイトへようこそ！
+```
+
+ページは自動的にナビゲーションに表示されます。
+
+## 本番用ビルド
+
+```bash
+../velt build
+```
+
+これにより`dist/`ディレクトリに静的HTMLファイルが生成され、デプロイ準備完了です。

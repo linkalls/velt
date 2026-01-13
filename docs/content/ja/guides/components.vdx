@@ -1,0 +1,69 @@
++++
+layout = "default"
+title = "コンポーネント"
++++
+
+# コンポーネント
+
+コンポーネントはページの再利用可能な構成要素です。
+
+## コンポーネントの作成
+
+`components/`ディレクトリにVファイルを作成：
+
+```v
+// components/callout.v
+module components
+
+pub struct Callout {
+pub:
+    type_   string  // info, warning, success, error
+    content string
+}
+
+pub fn (c Callout) render() string {
+    icon := match c.type_ {
+        'info' { '💡' }
+        'warning' { '⚠️' }
+        'success' { '✅' }
+        'error' { '🚨' }
+        else { 'ℹ' }
+    }
+    return '<div class="callout callout-${c.type_}">${icon} ${c.content}</div>'
+}
+```
+
+## コンポーネントの使用
+
+`.vdx`ファイルでHTMLライクな構文でコンポーネントを使用：
+
+```html
+<Callout type_="info">
+これは情報メッセージです。
+</Callout>
+```
+
+<Callout type_="warning">
+`type`はVの予約キーワードなので、アンダースコア付きの`type_`を使用してください。
+</Callout>
+
+## 組み込みコンポーネント
+
+Veltプロジェクトには以下のコンポーネントが付属：
+
+| コンポーネント | 説明 | プロップ |
+|--------------|------|---------|
+| `Callout` | アイコン付きアラートボックス | `type_`: info, warning, success, error |
+| `Hero` | ランディングページ用ヒーローセクション | `title`, `subtitle` |
+
+## 子コンテンツ
+
+タグ間のコンテンツは`content`フィールドになります：
+
+```html
+<Callout type_="info">
+このテキストがcontentフィールドになります。
+</Callout>
+```
+
+コンテンツは自動的にMarkdownとして解析されます。

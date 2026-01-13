@@ -1,0 +1,60 @@
++++
+layout = "default"
+title = "インストール"
++++
+
+# インストール
+
+システムにVeltをインストールする方法を学びます。
+
+## 前提条件
+
+Veltをインストールする前に、以下が必要です：
+
+- **V言語** - [vlang.ioからダウンロード](https://vlang.io)
+- **Git** - リポジトリのクローン用
+
+## Vのインストール
+
+Vがインストールされていない場合、以下の手順に従ってください：
+
+```bash
+# Vコンパイラをクローン
+git clone https://github.com/vlang/v
+cd v
+
+# Vをブートストラップ（Linux/macOS）
+make
+
+# Windowsの場合
+make.bat
+```
+
+簡単にアクセスできるようにVをPATHに追加してください。
+
+## Veltのインストール
+
+Veltをクローンしてビルド：
+
+```bash
+git clone https://github.com/vlang/velt
+cd velt
+v -o velt src/
+```
+
+<Callout type_="success">
+**完了！** これで`velt`実行ファイルが使用可能です。
+</Callout>
+
+## インストールの確認
+
+```bash
+./velt --help
+```
+
+利用可能なコマンドが表示されるはずです。
+
+## 次のステップ
+
+- [クイックスタート](quick-start.html) - 最初のVeltプロジェクトを作成
+- [プロジェクト構造](project-structure.html) - Veltプロジェクトの構成を理解
