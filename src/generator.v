@@ -1,6 +1,6 @@
 module main
 
-import os
+// import os
 import strings
 
 fn generate_v_code(segments []ParsedSegment, output_path string, layout_name string) string {
