@@ -1,16 +1,16 @@
 module layouts
 
 pub fn landing(content string, title string, nav_html string) string {
-    _ = title   // unused but kept for API consistency
-    _ = nav_html
-    return '
+	_ = title // unused but kept for API consistency
+	_ = nav_html
+	return '
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Velt - Static Site Generator</title>
-    <link rel="stylesheet" href="assets/landing.css">
+    <link rel="stylesheet" href="/assets/landing.css">
     <script>
         const savedTheme = localStorage.getItem("theme");
         if (savedTheme === "dark" || (!savedTheme && window.matchMedia("(prefers-color-scheme: dark)").matches)) {

@@ -1,15 +1,15 @@
 module layouts
 
 pub fn default(content string, title string, nav_html string) string {
-    page_title := if title.len > 0 { '${title} - Velt' } else { 'Velt Docs' }
-    return '
+	page_title := if title.len > 0 { '${title} - Velt' } else { 'Velt Docs' }
+	return '
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>${page_title}</title>
-    <link rel="stylesheet" href="assets/style.css">
+    <link rel="stylesheet" href="/assets/style.css">
     <script>
         const savedTheme = localStorage.getItem("theme");
         if (savedTheme === "dark" || (!savedTheme && window.matchMedia("(prefers-color-scheme: dark)").matches)) {
