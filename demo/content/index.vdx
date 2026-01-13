@@ -1,7 +1,31 @@
-# Hello Velt
++++
+layout = "landing"
 
-This is a test page.
+# Hero Section
+hero.title = "The Future of Docs is"
+hero.titleGradient = "Fast & Type-Safe"
+hero.subtitle = "Velt is not just another static site generator. Zero-runtime JS, type-safe components, and millisecond builds."
+hero.btnText = "Get Started"
+hero.btnLink = "docs.html"
 
-<Hello title="My First Velt Component" />
+# Features Section - these will be auto-generated
+[[features]]
+icon = "⚡"
+title = "Blazingly Fast"
+details = "Built with V, one of the fastest compilers."
 
-End of page.
+[[features]]
+icon = "🔒"
+title = "Type Safe"
+details = "Component props are checked at compile time."
+
+[[features]]
+icon = "📦"
+title = "Zero Runtime JS"
+details = "Pure static HTML output. No JS frameworks."
++++
+
+## Additional Content
+
+This Markdown content will appear below the features section.
+You can write normal **Markdown** here!

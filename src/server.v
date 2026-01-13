@@ -7,6 +7,8 @@ import os
 // App struct with veb.StaticHandler embedded FIRST
 pub struct App {
 	veb.StaticHandler
+mut:
+	reload_chan chan bool
 }
 
 // Custom Context struct
@@ -14,7 +16,25 @@ pub struct Context {
 	veb.Context
 }
 
+pub fn (mut app App) notify_reload() {
+	select {
+		app.reload_chan <- true { println('[server] Sending reload signal...') }
+		else { println('[server] No listeners for reload.') }
+	}
+}
+
 // ... (structs unchanged)
+
+// SSE Route for live reload
+@['/_velt_reload']
+pub fn (app &App) reload_event(mut ctx Context) veb.Result {
+	ctx.set_content_type('text/event-stream')
+	ctx.set_header('Cache-Control', 'no-cache')
+	ctx.set_header('Connection', 'keep-alive')
+
+	_ := <-app.reload_chan
+	return ctx.ok('data: reload\n\n')
+}
 
 // Index route
 @['/']
@@ -48,7 +68,15 @@ fn serve_page(mut ctx Context, name string) veb.Result {
 	}
 
 	println('[velt] Building: ${vdx_file}')
-	html := build_page_with_markdown(vdx_file)
+	mut html := build_page_with_markdown(vdx_file)
+
+	// Inject reload script
+	reload_script := '<script>
+	new EventSource("/_velt_reload").onmessage = () => location.reload();
+	</script></body>'
+
+	html = html.replace('</body>', reload_script)
+
 	return ctx.html(html)
 }
 
@@ -68,10 +96,13 @@ fn build_page_with_markdown(path string) string {
 	}
 }
 
-fn cmd_serve(port int) ! {
+fn cmd_serve(port int, app &App) ! {
 	println('Starting Velt Dev Server at http://localhost:${port}')
-	mut app := &App{}
 	// Handle static assets at /assets route
-	app.mount_static_folder_at('assets', '/assets')!
-	veb.run[App, Context](mut app, port)
+	// Note: We need to cast to mut because mount_static_folder_at modifies app,
+	// but veb.run takes it too.
+	// Actually, let's just assume app is already set up or we modify it here.
+	mut mutable_app := unsafe { app }
+	mutable_app.mount_static_folder_at('assets', '/assets')!
+	veb.run[App, Context](mut mutable_app, port)
 }

@@ -3,8 +3,8 @@ module main
 import os
 import time
 
-fn watch_and_rebuild() {
-	println('Starting development server...')
+fn watch_and_rebuild(cb fn()) {
+	println('Starting watcher...')
 
 	build_all()
 
@@ -29,6 +29,7 @@ fn watch_and_rebuild() {
 				println('Change detected in ${file}, rebuilding...')
 				build_one(file)
 				mtimes[file] = mtime
+				cb()
 			}
 		}
 	}
