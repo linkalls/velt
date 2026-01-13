@@ -144,6 +144,7 @@ body {
 }
 
 .brand {
+    display: block;
     padding: 1.5rem 1.75rem;
     font-size: 1.25rem;
     font-weight: 700;
@@ -153,6 +154,13 @@ body {
     -webkit-text-fill-color: transparent;
     background-clip: text;
     border-bottom: 1px solid var(--border-subtle);
+    text-decoration: none;
+    transition: opacity var(--transition-fast);
+}
+
+.brand:hover {
+    opacity: 0.8;
+    text-decoration: none;
 }
 
 .sidebar nav {

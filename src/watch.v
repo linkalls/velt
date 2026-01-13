@@ -51,6 +51,7 @@ fn build_one(file string) {
 
 	// Parse frontmatter (TOML between +++ markers)
 	mut layout := 'default'
+	mut title := ''
 	mut body := content
 
 	if content.starts_with('+++') {
@@ -58,14 +59,17 @@ fn build_one(file string) {
 		parts := content.split('+++')
 		if parts.len >= 3 {
 			frontmatter := parts[1].trim_space()
-			// Parse layout from frontmatter
+			// Parse frontmatter fields
 			for line in frontmatter.split_into_lines() {
-				if line.contains('layout') && line.contains('=') {
-					// Extract value: layout = "landing"
+				if line.contains('=') {
+					key := line.split('=')[0].trim_space()
 					value := line.split('=')[1].trim_space().replace('"', '').replace("'",
 						'')
-					layout = value
-					break
+					if key == 'layout' {
+						layout = value
+					} else if key == 'title' {
+						title = value
+					}
 				}
 			}
 			// Body is everything after the second +++
@@ -86,7 +90,7 @@ fn build_one(file string) {
 		os.mkdir_all(output_dir) or {}
 	}
 
-	code := generate_v_code(segments, output_path, layout)
+	code := generate_v_code(segments, output_path, layout, title)
 
 	// Use unique temp file name based on source file to avoid race conditions
 	// when building multiple files concurrently

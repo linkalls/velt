@@ -6,7 +6,7 @@ hero.title = "The Future of Docs is"
 hero.titleGradient = "Fast & Type-Safe"
 hero.subtitle = "Velt is not just another static site generator. Zero-runtime JS, type-safe components, and millisecond builds."
 hero.btnText = "Get Started"
-hero.btnLink = "./docs.html"
+hero.btnLink = "/docs"
 
 # Features Section - these will be auto-generated
 [[features]]

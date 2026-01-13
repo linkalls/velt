@@ -8,6 +8,7 @@ title = "Velt - The Static Site Generator"
     subtitle="Type-safe, zero-runtime JS, and blazingly fast. Built with V."
     btn_text="Get Started"
     btn_link="./docs.html"
+    github_link="https://github.com/linkalls/velt"
 />
 
 <FeaturesSection />

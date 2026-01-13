@@ -6,6 +6,7 @@ pub:
     subtitle string
     btn_text string
     btn_link string
+    github_link string
 }
 
 pub fn (h Hero) render() string {
@@ -16,7 +17,7 @@ pub fn (h Hero) render() string {
             <p class="hero-subtitle">${h.subtitle}</p>
             <div class="hero-actions">
                 <a href="${h.btn_link}" class="btn btn-primary">${h.btn_text}</a>
-                <a href="https://github.com/vlang/velt" class="btn btn-secondary">View on GitHub</a>
+                <a href="${h.github_link}" class="btn btn-secondary">View on GitHub</a>
             </div>
         </div>
     </header>

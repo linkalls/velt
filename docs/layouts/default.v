@@ -1,13 +1,14 @@
 module layouts
 
-pub fn default(content string) string {
+pub fn default(content string, title string) string {
+    page_title := if title.len > 0 { '${title} - Velt' } else { 'Velt Docs' }
     return '
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Velt Docs</title>
+    <title>${page_title}</title>
     <link rel="stylesheet" href="assets/style.css">
     <script>
         // Check local storage or preference
@@ -22,7 +23,7 @@ pub fn default(content string) string {
 <body>
     <div class="layout">
         <aside class="sidebar">
-            <div class="brand">Velt Docs</div>
+            <a href="index.html" class="brand">Velt</a>
             <nav>
                 <a href="index.html" class="active">Introduction</a>
                 <a href="#">Getting Started</a>
