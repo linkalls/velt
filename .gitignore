@@ -4,3 +4,6 @@ build_gen.v
 dist/
 vlang/
 src.exe
+velt
+docs/dist/
+docs/build_gen.v
