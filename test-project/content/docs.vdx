@@ -1,0 +1,21 @@
+# Welcome to Velt
+
+Velt is a **blazingly fast** static site generator powered by V.
+
+<Callout type_="info">
+This is a V component running inside Markdown!
+</Callout>
+
+## Features
+
+- Zero Runtime JS
+- Type Safe Props
+- Millisecond builds
+
+<Callout type_="warning">
+**Note:** This is an experimental version.
+</Callout>
+
+## Getting Started
+
+Edit `content/docs.vdx` to start writing your documentation.
