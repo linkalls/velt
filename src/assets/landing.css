@@ -251,6 +251,16 @@ body {
     width: 100%;
 }
 
+.landing-main ul,
+.landing-main ol {
+    margin-left: 1.5rem;
+    margin-bottom: 1rem;
+}
+
+.landing-main li {
+    margin-bottom: 0.5rem;
+}
+
 .landing-main > *:not(.hero):not(.features-section) {
     max-width: 800px;
     margin: 0 auto;

@@ -36,7 +36,9 @@ pub fn landing(content string, title string, nav_html string) string {
         </div>
     </nav>
     
-    ${content}
+    <main class="landing-main">
+        ${content}
+    </main>
     
     <footer class="landing-footer">
         <p>Built with <a href="https://github.com/vlang/v">V</a> • Powered by <a href="https://github.com/linkalls/velt">Velt</a></p>
