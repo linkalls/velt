@@ -1,0 +1,131 @@
++++
+title = "TSXコンポーネント"
+layout = "default"
++++
+
+# TSXコンポーネント
+
+VコンポーネントシステムはVで作られていますが、TSX（TypeScript + JSX）でもコンポーネントを書くことができます。
+
+## なぜTSX？
+
+- **TypeScriptの型安全性** - プロップの型チェック
+- **既存スキルの活用** - React/TypeScriptの知識を使える
+- **エコシステム** - npmパッケージとの統合
+
+## TSXコンポーネントの書き方
+
+### 基本構造
+
+```tsx
+// components/Hero.tsx
+interface HeroProps {
+  title: string;
+  subtitle?: string;
+  btnText?: string;
+  btnLink?: string;
+}
+
+export default function Hero({ 
+  title, 
+  subtitle, 
+  btnText, 
+  btnLink 
+}: HeroProps) {
+  return (
+    <section className="hero">
+      <h1 className="hero-title">{title}</h1>
+      {subtitle && <p className="hero-subtitle">{subtitle}</p>}
+      {btnText && btnLink && (
+        <a href={btnLink} className="btn btn-primary">
+          {btnText}
+        </a>
+      )}
+    </section>
+  );
+}
+```
+
+### VDXでの使用
+
+```markdown
++++
+layout = "landing"
+title = "マイサイト"
++++
+
+<Hero
+  title="ようこそ"
+  subtitle="私のサイトです"
+  btnText="始める"
+  btnLink="./docs.html"
+/>
+```
+
+## 必要環境
+
+TSXコンポーネントにはBunが必要：
+
+```bash
+# Bunをインストール
+curl -fsSL https://bun.sh/install | bash
+
+# インストール確認
+bun --version
+```
+
+## V vs TSX 比較
+
+| 機能 | Vコンポーネント | TSXコンポーネント |
+|------|----------------|------------------|
+| 型安全性 | ✅ | ✅ |
+| ビルド速度 | ⚡ 高速 | 🔧 Bun必要 |
+| 学習コスト | Vの知識必要 | React/TSの知識でOK |
+| 依存関係 | なし | Bun, React |
+
+## ベストプラクティス
+
+1. **シンプルなコンポーネント** → Vで書く
+2. **複雑なロジック/状態管理** → TSXで書く
+3. **混在使用** → 同じプロジェクトで両方使える
+
+## 例：フィーチャーカード
+
+```tsx
+// components/FeatureCard.tsx
+interface FeatureCardProps {
+  icon: string;
+  title: string;
+  description: string;
+  link?: string;
+}
+
+export default function FeatureCard({ 
+  icon, 
+  title, 
+  description, 
+  link 
+}: FeatureCardProps) {
+  const content = (
+    <div className="feature-card">
+      <span className="feature-icon">{icon}</span>
+      <h3 className="feature-title">{title}</h3>
+      <p className="feature-desc">{description}</p>
+    </div>
+  );
+
+  return link 
+    ? <a href={link} className="feature-card-link">{content}</a>
+    : content;
+}
+```
+
+VDXでの使用：
+
+```markdown
+<FeatureCard
+  icon="⚡"
+  title="超高速"
+  description="Vはネイティブコードにコンパイルされ、驚異的な速度を実現"
+/>
+```

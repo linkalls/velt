@@ -1,0 +1,166 @@
++++
+title = "Markdownリファレンス"
+layout = "default"
++++
+
+# Markdownリファレンス
+
+Veltは標準MarkdownとGitHub Flavored Markdown（GFM）拡張をサポートしています。
+
+## テキストフォーマット
+
+```markdown
+**太字テキスト**
+*斜体テキスト*
+***太字かつ斜体***
+~~取り消し線~~
+`インラインコード`
+```
+
+**太字テキスト**、*斜体テキスト*、***太字かつ斜体***、~~取り消し線~~、`インラインコード`
+
+## 見出し
+
+```markdown
+# 見出し1
+## 見出し2
+### 見出し3
+#### 見出し4
+```
+
+## リンク
+
+```markdown
+[リンクテキスト](https://example.com)
+[タイトル付きリンク](https://example.com "タイトル")
+```
+
+[リンクテキスト](https://example.com)
+
+## 画像
+
+```markdown
+![代替テキスト](/path/to/image.png)
+![代替テキスト](/path/to/image.png "オプションタイトル")
+```
+
+## リスト
+
+### 順序なしリスト
+
+```markdown
+- 項目1
+- 項目2
+  - ネスト項目
+  - 別のネスト
+- 項目3
+```
+
+- 項目1
+- 項目2
+  - ネスト項目
+  - 別のネスト
+- 項目3
+
+### 順序付きリスト
+
+```markdown
+1. 最初の項目
+2. 2番目の項目
+3. 3番目の項目
+```
+
+1. 最初の項目
+2. 2番目の項目
+3. 3番目の項目
+
+## コード
+
+### インラインコード
+
+```markdown
+`バッククォート`でインラインコード
+```
+
+### コードブロック
+
+トリプルバッククォートとオプションで言語を指定：
+
+````markdown
+```javascript
+function greet(name) {
+  return `Hello, ${name}!`;
+}
+```
+````
+
+```javascript
+function greet(name) {
+  return `Hello, ${name}!`;
+}
+```
+
+### サポート言語
+
+Veltは以下のシンタックスハイライトをサポート：
+
+| 言語 | 識別子 |
+|------|--------|
+| JavaScript | `javascript`, `js` |
+| TypeScript | `typescript`, `ts` |
+| TSX/JSX | `tsx`, `jsx` |
+| HTML | `html` |
+| CSS | `css` |
+| Bash | `bash`, `shell` |
+| JSON | `json` |
+| TOML | `toml` |
+| Markdown | `markdown`, `md` |
+| V | `v` |
+
+## テーブル（GFM）
+
+```markdown
+| 名前 | 型 | デフォルト |
+|------|-----|----------|
+| `title` | string | - |
+| `count` | number | 0 |
+```
+
+| 名前 | 型 | デフォルト |
+|------|-----|----------|
+| `title` | string | - |
+| `count` | number | 0 |
+
+## 引用
+
+```markdown
+> これは引用です。
+> 複数行にまたがることができます。
+>
+> 複数段落も可能です。
+```
+
+> これは引用です。
+> 複数行にまたがることができます。
+>
+> 複数段落も可能です。
+
+## 水平線
+
+```markdown
+---
+```
+
+---
+
+## タスクリスト（GFM）
+
+```markdown
+- [x] 完了したタスク
+- [ ] 未完了のタスク
+- [ ] 別のタスク
+```
+
+- [x] 完了したタスク
+- [ ] 未完了のタスク
+- [ ] 別のタスク

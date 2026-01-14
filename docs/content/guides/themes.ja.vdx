@@ -1,0 +1,97 @@
++++
+title = "テーマシステム"
+layout = "default"
++++
+
+# テーマシステム
+
+Veltは複数のテーマをサポート。プロジェクト作成時にテーマを選択できます。
+
+## 利用可能なテーマ
+
+| テーマ | 説明 | 用途 |
+|-------|------|------|
+| `docs` | ドキュメントサイト | APIリファレンス、ガイド |
+| `blog` | ブログ（記事付き） | 個人ブログ、技術ブログ |
+
+## テーマの指定
+
+### プロジェクト作成時
+
+```bash
+# ドキュメントサイトを作成
+velt new my-docs --theme docs
+
+# ブログを作成
+velt new my-blog --theme blog
+```
+
+### テーマ構造
+
+各テーマには以下が含まれます：
+
+```
+themes/<theme-name>/
+├── layouts/
+│   ├── default.v      # デフォルトレイアウト
+│   └── ...            # テーマ固有レイアウト
+├── components/
+│   └── ...            # テーマコンポーネント
+├── assets/
+│   └── style.css      # テーマスタイル
+└── content/
+    └── index.vdx      # サンプルコンテンツ
+```
+
+## テーマのカスタマイズ
+
+### CSS変数
+
+テーマはCSS変数を使用して簡単にカスタマイズ可能：
+
+```css
+:root {
+    /* カラー */
+    --accent-primary: #6366f1;
+    --accent-secondary: #8b5cf6;
+    
+    /* タイポグラフィ */
+    --font-sans: 'Inter', sans-serif;
+    --font-mono: 'JetBrains Mono', monospace;
+    
+    /* スペーシング */
+    --sidebar-width: 280px;
+    --content-max-width: 820px;
+}
+```
+
+### ダークモード
+
+Veltテーマには組み込みダークモードサポート：
+
+```css
+html.dark {
+    --bg-primary: #09090b;
+    --bg-secondary: #0f0f11;
+    --text-primary: #fafafa;
+}
+```
+
+ダークモードは以下に基づいて自動切り替え：
+1. `localStorage` に保存されたユーザー設定
+2. `prefers-color-scheme` によるシステム設定
+
+## カスタムテーマの作成
+
+1. 既存テーマをベースとしてコピー
+2. `layouts/` のレイアウトを修正
+3. `assets/` のスタイルを更新
+4. `components/` にカスタムコンポーネントを追加
+
+```bash
+# docsテーマをベースにコピー
+cp -r themes/docs themes/my-theme
+
+# テーマを編集
+code themes/my-theme/
+```

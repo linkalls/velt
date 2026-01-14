@@ -1,0 +1,154 @@
++++
+title = "VDXファイルフォーマット"
+layout = "default"
++++
+
+# VDXファイルフォーマット
+
+VDX（Velt Document eXtension）はVeltのコンテンツファイルフォーマットで、MarkdownとVコンポーネントを組み合わせます。
+
+## ファイル構造
+
+VDXファイルは2つのパートで構成：
+
+1. **フロントマター** - `+++` マーカー間のTOMLメタデータ
+2. **コンテンツ** - 埋め込みコンポーネント付きMarkdown
+
+```markdown
++++
+layout = "default"
+title = "マイページ"
++++
+
+# ようこそ
+
+これはMarkdownコンテンツです。
+
+<Callout type_="info">
+これはVコンポーネントです！
+</Callout>
+```
+
+## フロントマター
+
+フロントマターはTOMLフォーマット：
+
+```toml
++++
+layout = "default"
+title = "ページタイトル"
+date = "2024-01-14"
+author = "あなたの名前"
++++
+```
+
+### 利用可能なフィールド
+
+| フィールド | 必須 | 説明 |
+|-----------|------|------|
+| `layout` | ✅ | 使用するレイアウトテンプレート |
+| `title` | ✅ | ページタイトル（ナビゲーションで使用） |
+| `date` | ❌ | 公開日 |
+| `author` | ❌ | 著者名 |
+
+## Markdownサポート
+
+VDXは標準Markdown + GFM（GitHub Flavored Markdown）をサポート：
+
+### 見出し
+
+```markdown
+# H1
+## H2
+### H3
+```
+
+### テキストフォーマット
+
+```markdown
+**太字** と *斜体*
+`インラインコード`
+[リンク](https://example.com)
+```
+
+### コードブロック
+
+````markdown
+```typescript
+const greeting = "Hello, World!";
+console.log(greeting);
+```
+````
+
+### リスト
+
+```markdown
+- 順序なし項目
+- 別の項目
+
+1. 順序付き項目
+2. 別の項目
+```
+
+### テーブル（GFM）
+
+```markdown
+| ヘッダー1 | ヘッダー2 |
+|---------|---------|
+| セル1 | セル2 |
+```
+
+## コンポーネントの埋め込み
+
+JSX風のシンタックスでVコンポーネントを埋め込み：
+
+```markdown
+<ComponentName prop="value" />
+
+<ComponentName prop="value">
+子コンテンツ
+</ComponentName>
+```
+
+### 自己閉じタグ
+
+```markdown
+<Hero title="ようこそ" />
+```
+
+### 子要素付き
+
+```markdown
+<Callout type_="warning">
+**警告:** これは重要です！
+</Callout>
+```
+
+### プロップ
+
+- 文字列: `prop="value"`
+- 式: `prop={expression}`
+- 真偽値: `enabled={true}`
+
+## ファイル命名
+
+### 標準ファイル
+
+```
+content/
+├── index.vdx           → /index.html
+├── docs.vdx            → /docs.html
+└── guides/
+    └── layouts.vdx     → /guides/layouts.html
+```
+
+### 多言語ファイル
+
+```
+content/
+├── docs.vdx            → /docs.html (英語)
+├── docs.ja.vdx         → /docs.ja.html (日本語)
+└── guides/
+    ├── layouts.vdx     → /guides/layouts.html
+    └── layouts.ja.vdx  → /guides/layouts.ja.html
+```

@@ -1,0 +1,158 @@
++++
+title = "ブログ作成"
+layout = "default"
++++
+
+# Veltでブログを作成する
+
+<Callout type_="success">
+Veltのブログテーマで美しく高速なブログサイトを構築。JavaScript不要、超高速ロード。
+</Callout>
+
+## クイックスタート
+
+30秒でブログを起動：
+
+```bash
+# ブログプロジェクトを作成
+velt new my-blog --theme blog
+
+# ディレクトリに移動
+cd my-blog
+
+# 開発サーバーを起動
+velt dev
+```
+
+ブログが `http://localhost:3000` で稼働開始！
+
+---
+
+## ディレクトリ構造
+
+```
+my-blog/
+├── content/
+│   ├── index.vdx              # ホームページ（記事一覧）
+│   └── posts/
+│       ├── hello-world.vdx    # 最初の記事
+│       └── second-post.vdx    # 追加記事...
+├── layouts/
+│   ├── post.v                 # 個別記事レイアウト
+│   └── list.v                 # 記事一覧レイアウト
+├── components/
+│   └── PostCard.v             # 記事プレビューカード
+└── assets/
+    └── blog.css               # カスタムスタイル
+```
+
+---
+
+## 記事の書き方
+
+### フロントマター
+
+すべての記事はTOMLフロントマターで始まります：
+
+```markdown
++++
+layout = "post"
+title = "記事タイトル"
+date = "2024-01-14"
+author = "著者名"
+tags = ["チュートリアル", "velt"]
++++
+
+記事の本文はここから...
+```
+
+### フロントマターフィールド
+
+| フィールド | 必須 | 説明 | 例 |
+|-----------|------|------|-----|
+| `layout` | ✅ | 常に `"post"` | `"post"` |
+| `title` | ✅ | 記事タイトル | `"初めての記事"` |
+| `date` | ✅ | 公開日 | `"2024-01-14"` |
+| `author` | ❌ | 著者名 | `"山田太郎"` |
+| `tags` | ❌ | タグ | `["チュートリアル"]` |
+| `draft` | ❌ | 一覧から非表示 | `true` |
+
+<Callout type_="info">
+`draft = true` の記事は一覧に表示されませんが、直接URLでアクセス可能です。
+</Callout>
+
+---
+
+## 記事一覧ページ
+
+### PostCardコンポーネントの使用
+
+`PostCard`で魅力的な記事一覧を作成：
+
+```markdown
++++
+layout = "list"
+title = "マイブログ"
++++
+
+# 最新の記事
+
+<PostCard
+  title="Velt入門"
+  excerpt="超高速な静的サイト構築を学ぶ"
+  date="2024-01-14"
+  url="./posts/getting-started.html"
+  author="田中花子"
+/>
+```
+
+---
+
+## カスタマイズ
+
+### テーマ変数
+
+`assets/blog.css`でブログの外観をカスタマイズ：
+
+```css
+:root {
+  /* ブランドカラー */
+  --blog-accent: #6366f1;
+  --blog-accent-hover: #4f46e5;
+  
+  /* タイポグラフィ */
+  --blog-title-size: 2.5rem;
+  --blog-content-width: 720px;
+}
+```
+
+### カードホバーエフェクト
+
+```css
+.post-card {
+  padding: 1.5rem;
+  border-radius: 12px;
+  transition: all 0.2s ease;
+}
+
+.post-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+```
+
+---
+
+## SEOベストプラクティス
+
+<Callout type_="warning">
+SEOを忘れずに！検索順位向上のため、記事のフロントマターに以下を追加してください。
+</Callout>
+
+```toml
++++
+title = "SEO最適化された記事タイトル"
+description = "160文字以内の魅力的なメタディスクリプション"
+image = "/assets/og-image.png"
++++
+```
