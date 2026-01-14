@@ -248,7 +248,6 @@ fn build_one(file string, nav_html string, lang string) {
 		println('Successfully built ${output_path}')
 	}
 
-	// Clean up temp files (temporarily disabled for debugging)
-	// os.rm(gen_file) or {}
-	// os.rm(gen_exe) or {}
+	// Clean up temp files
+	os.rm(gen_file) or {}
 }
