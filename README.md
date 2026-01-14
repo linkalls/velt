@@ -1,81 +1,90 @@
-# Velt
+# 🚀 Velt
 
-Velt is a Static Site Generator (SSG) framework written in V.
-It leverages the performance and type safety of V to build blazing fast websites with Zero Runtime JS.
+**A blazingly fast Static Site Generator powered by V**
 
-## 🚀 Features
+Velt generates pure static HTML from Markdown with embedded V components. No JavaScript runtime, no hydration, just fast websites.
 
-- **Zero Runtime JS**: Generates pure static HTML. No hydration, no client-side framework overhead.
-- **Type Safety**: Components are V structs. Props are type-checked at compile time.
-- **Blazingly Fast**: Powered by the V compiler. Millisecond build times.
-- **VDX Format**: Markdown with embedded V components (similar to MDX).
-- **Live Reload**: Built-in development server with instant updates.
-- **Automatic Navigation**: Automatically generates sidebar navigation from your content structure.
+[![Made with V](https://img.shields.io/badge/Made%20with-V-5D87BF.svg)](https://vlang.io)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+
+## ✨ Features
+
+| Feature | Description |
+|---------|-------------|
+| ⚡ **Blazingly Fast** | Parallel builds with V threads. Millisecond rebuilds. |
+| 🔒 **Type Safe** | Component props are V structs, type-checked at compile time. |
+| 📝 **VDX Format** | Markdown + V components (like MDX for V). |
+| 🔄 **Live Reload** | Instant browser refresh on file changes. |
+| 🌐 **i18n Ready** | Filename-based localization (`docs.ja.vdx` → `/docs.ja.html`). |
+| 🎨 **Syntax Highlighting** | Shiki-powered code blocks with dark/light themes. |
+| 📦 **Zero JS Runtime** | Pure static HTML output. No client-side framework. |
 
 ## 📦 Installation
 
-Prerequisites: [V](https://vlang.io/) must be installed and in your PATH.
+**Prerequisites:** [V](https://vlang.io/) must be installed.
 
 ```bash
-git clone https://github.com/yourusername/velt
+git clone https://github.com/linkalls/velt
 cd velt
-v -o velt src/
+v -o velt .
 ```
 
-## 🛠 Usage
+## 🛠 Quick Start
 
-### Create a new project
+### 1. Create a new project
 
 ```bash
-./velt new my-project
+# Documentation site
+./velt new my-docs
+
+# Blog
+./velt new my-blog --theme blog
 ```
 
-### Start Development Server
+### 2. Start development server
 
 ```bash
-cd my-project
+cd my-docs
 ../velt dev
 ```
 
-This starts a local server at `http://localhost:3000`. Changes to `.vdx` files or components will automatically trigger a rebuild and reload the browser.
+Open `http://localhost:3000`. Edit any `.vdx` file and watch the browser auto-refresh!
 
-### Build for Production
+### 3. Build for production
 
 ```bash
 ../velt build
 ```
 
-The static site will be generated in the `dist/` directory, ready to be deployed to Netlify, Vercel, or GitHub Pages.
+Output is in `dist/` - deploy to Netlify, Vercel, or any static host.
 
 ## 📂 Project Structure
 
-```text
-/my-project
-├── v.mod             # Project dependencies
-├── velt.config.v     # Configuration (Planned)
-├── /components       # User components (.v)
-│   └── Callout.v     # struct Callout { ... }
-├── /layouts          # Page layouts (.v)
-│   └── default.v     # fn default(content, title, nav) string
-├── /content          # Content files (.vdx)
-│   ├── index.vdx     # -> dist/index.html
-│   └── docs.vdx      # -> dist/docs.html
-└── /dist             # Output directory (gitignored)
+```
+my-project/
+├── content/           # Markdown content (.vdx)
+│   ├── index.vdx      → /index.html
+│   ├── docs.vdx       → /docs.html
+│   └── docs.ja.vdx    → /docs.ja.html (Japanese)
+├── components/        # V components
+│   └── Callout.v
+├── layouts/           # Page layouts
+│   └── default.v
+├── assets/            # Static files (CSS, images)
+│   └── style.css
+└── dist/              # Build output (gitignored)
 ```
 
 ## 🧩 Components
 
-Components are standard V structs defined in the `components` module.
-
-**1. Define a component (`components/Callout.v`):**
-
+**Define:** `components/Callout.v`
 ```v
 module components
 
 pub struct Callout {
 pub:
-    type_   string = 'info' // Use 'type_' to avoid keyword conflict
-    content string          // Children content is injected here
+    type_   string = 'info'
+    content string  // Children content
 }
 
 pub fn (c Callout) render() string {
@@ -83,62 +92,75 @@ pub fn (c Callout) render() string {
 }
 ```
 
-**2. Use it in Markdown (`content/index.vdx`):**
-
+**Use:** `content/index.vdx`
 ```markdown
 # Welcome
 
 <Callout type_="warning">
-  This is a V component with **Markdown** inside!
+  This is a **warning** callout!
 </Callout>
 ```
 
 ## 🎨 Layouts
 
-Layouts are V functions that wrap your page content. They receive the page content, title, and auto-generated navigation HTML.
-
-**`layouts/default.v`:**
+Layouts wrap your page content:
 
 ```v
+// layouts/default.v
 module layouts
 
-pub fn default(content string, title string, nav_html string) string {
-    return '
-    <!DOCTYPE html>
-    <html>
-        <head>
-            <title>${title}</title>
-        </head>
-        <body>
-            <nav>${nav_html}</nav>
-            <main>${content}</main>
-        </body>
-    </html>
-    '
+pub fn default(content string, title string, nav_html string, lang string, page_path string) string {
+    return '<!DOCTYPE html>
+    <html lang="${lang}">
+    <head><title>${title}</title></head>
+    <body>
+        <nav>${nav_html}</nav>
+        <main>${content}</main>
+    </body>
+    </html>'
 }
 ```
 
-**`content/index.vdx`:**
+## 🌐 Internationalization
 
-```toml
-+++
-title = "Home"
-layout = "default"
-+++
+Use filename-based i18n:
+
+| File | Output | Language |
+|------|--------|----------|
+| `docs.vdx` | `/docs.html` | English (default) |
+| `docs.ja.vdx` | `/docs.ja.html` | Japanese |
+| `docs.zh.vdx` | `/docs.zh.html` | Chinese |
+
+The language switcher automatically generates correct URLs.
+
+## 📚 CLI Reference
+
+```bash
+velt new <name> [--theme <theme>]  # Create project (docs/blog)
+velt dev                           # Dev server + live reload
+velt build                         # Production build
+velt serve [port]                  # Static server only
+velt help                          # Show help
 ```
 
 ## 📄 Documentation
 
-We have a documentation site built with Velt itself!
-Check out the `docs/` directory.
-
-To run the docs:
+Full documentation is built with Velt itself:
 
 ```bash
 cd docs
 ../velt dev
 ```
 
+## 🗺 Roadmap
+
+- [ ] Search functionality
+- [ ] RSS feed generation
+- [ ] Sitemap generation
+- [ ] Custom 404 pages
+- [ ] Image optimization
+- [ ] MDX-like import syntax
+
 ## License
 
-MIT
+MIT © [linkalls](https://github.com/linkalls)
