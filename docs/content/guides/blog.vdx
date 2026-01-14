@@ -1,113 +1,179 @@
 +++
-title = "ブログの作成"
+title = "Blog Creation"
 layout = "default"
 +++
 
-# ブログの作成
+# Creating a Blog with Velt
 
-Velt のブログテーマを使って、美しいブログサイトを構築できます。
+<Callout type_="success">
+Build beautiful, fast blog sites with Velt's blog theme. Zero JavaScript, lightning-fast load times.
+</Callout>
 
-## クイックスタート
+## Quick Start
+
+Get your blog running in 30 seconds:
 
 ```bash
-# ブログプロジェクトの作成
+# Create a new blog project
 velt new my-blog --theme blog
 
-# ディレクトリに移動
+# Navigate to the directory
 cd my-blog
 
-# 開発サーバー起動
+# Start the development server
 velt dev
 ```
 
-## ディレクトリ構成
+Your blog is now live at `http://localhost:3000`!
+
+---
+
+## Directory Structure
 
 ```
 my-blog/
 ├── content/
-│   ├── index.vdx          # トップページ（記事一覧）
+│   ├── index.vdx              # Home page (post listing)
 │   └── posts/
-│       └── hello-world.vdx  # 記事
+│       ├── hello-world.vdx    # Your first post
+│       └── second-post.vdx    # More posts...
 ├── layouts/
-│   ├── post.v             # 記事ページレイアウト
-│   └── list.v             # 一覧ページレイアウト
+│   ├── post.v                 # Individual post layout
+│   └── list.v                 # Post listing layout
 ├── components/
-│   └── PostCard.v         # 記事カード
+│   └── PostCard.v             # Post preview card
 └── assets/
-    └── blog.css           # スタイル
+    └── blog.css               # Custom styles
 ```
 
-## 記事の書き方
+---
+
+## Writing Posts
 
 ### Frontmatter
 
-記事ファイルの先頭に frontmatter を記述します：
+Every post starts with TOML frontmatter:
 
 ```markdown
 +++
 layout = "post"
-title = "記事のタイトル"
+title = "Your Post Title"
 date = "2024-01-14"
-author = "著者名"
+author = "Your Name"
+tags = ["tutorial", "velt"]
 +++
 
-ここから記事の本文を書きます。
+Your post content starts here...
 ```
 
-### 利用可能なフィールド
+### Frontmatter Fields
 
-| フィールド | 必須 | 説明 |
-|-----------|------|------|
-| `layout` | ✅ | `"post"` を指定 |
-| `title` | ✅ | 記事タイトル |
-| `date` | ✅ | 公開日（YYYY-MM-DD） |
-| `author` | ❌ | 著者名 |
+| Field | Required | Description | Example |
+|-------|----------|-------------|---------|
+| `layout` | ✅ | Always use `"post"` | `"post"` |
+| `title` | ✅ | Post title | `"My First Post"` |
+| `date` | ✅ | Publish date | `"2024-01-14"` |
+| `author` | ❌ | Author name | `"John Doe"` |
+| `tags` | ❌ | Post tags | `["tutorial"]` |
+| `draft` | ❌ | Hide from listing | `true` |
 
-## 記事一覧ページ
+<Callout type_="info">
+Posts with `draft = true` won't appear in your blog listing but are still accessible via direct URL.
+</Callout>
 
-`content/index.vdx` で PostCard コンポーネントを使います：
+---
+
+## Post Listing Page
+
+### Using PostCard Component
+
+Create an attractive post listing with `PostCard`:
 
 ```markdown
 +++
 layout = "list"
-title = "Blog"
+title = "My Blog"
 +++
 
-# 最新の記事
+# Latest Posts
 
 <PostCard
-  title="Hello World"
-  excerpt="最初の記事です。"
+  title="Getting Started with Velt"
+  excerpt="Learn how to build blazing-fast static sites."
   date="2024-01-14"
-  url="./posts/hello-world.html"
+  url="./posts/getting-started.html"
+  author="Jane Doe"
+/>
+
+<PostCard
+  title="Advanced Components"
+  excerpt="Deep dive into V components and layouts."
+  date="2024-01-12"
+  url="./posts/advanced-components.html"
+  author="Jane Doe"
 />
 ```
 
-## カスタマイズ
+---
 
-### スタイルの変更
+## Customization
 
-`assets/blog.css` を編集してスタイルをカスタマイズできます：
+### Theme Variables
+
+Customize your blog's look in `assets/blog.css`:
 
 ```css
-/* 記事タイトルのスタイル */
-.post-title {
-  font-size: 2.5rem;
-  background: var(--accent-gradient);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-}
-
-/* カード hover エフェクト */
-.post-card:hover {
-  transform: translateY(-2px);
-  box-shadow: var(--shadow-md);
+:root {
+  /* Brand colors */
+  --blog-accent: #6366f1;
+  --blog-accent-hover: #4f46e5;
+  
+  /* Typography */
+  --blog-title-size: 2.5rem;
+  --blog-content-width: 720px;
+  
+  /* Card styling */
+  --blog-card-radius: 12px;
+  --blog-card-shadow: 0 4px 12px rgba(0,0,0,0.1);
 }
 ```
 
-### 新しいコンポーネントの追加
+### Post Title Styling
 
-`components/` に新しい V ファイルを追加できます：
+```css
+.post-title {
+  font-size: var(--blog-title-size);
+  background: linear-gradient(135deg, #6366f1, #a855f7);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin-bottom: 1rem;
+}
+```
+
+### Card Hover Effects
+
+```css
+.post-card {
+  padding: 1.5rem;
+  border-radius: var(--blog-card-radius);
+  border: 1px solid var(--border-default);
+  transition: all 0.2s ease;
+}
+
+.post-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--blog-card-shadow);
+  border-color: var(--blog-accent);
+}
+```
+
+---
+
+## Adding Components
+
+### Tag Component
+
+Create reusable components like tags:
 
 ```v
 // components/Tag.v
@@ -116,9 +182,33 @@ module components
 pub struct Tag {
 pub:
   name string
+  color string = "primary"
 }
 
 pub fn (t Tag) render() string {
-  return '<span class="tag">${t.name}</span>'
+  return '<span class="tag tag-${t.color}">${t.name}</span>'
 }
+```
+
+Usage in your posts:
+
+```markdown
+<Tag name="Tutorial" color="blue" />
+<Tag name="Velt" color="purple" />
+```
+
+---
+
+## SEO Best Practices
+
+<Callout type_="warning">
+Don't forget SEO! Add these fields to your post frontmatter for better search rankings.
+</Callout>
+
+```toml
++++
+title = "SEO-Optimized Post Title"
+description = "A compelling meta description under 160 characters."
+image = "/assets/og-image.png"
++++
 ```

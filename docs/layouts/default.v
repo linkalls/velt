@@ -86,6 +86,8 @@ pub fn default(content string, title string, nav_html string, lang string, page_
             document.documentElement.classList.toggle("dark");
             const isDark = document.documentElement.classList.contains("dark");
             localStorage.setItem("theme", isDark ? "dark" : "light");
+            // Re-highlight code with new theme
+            if (window.shikiHighlight) window.shikiHighlight();
         });
 
         // Mobile menu toggle
@@ -97,7 +99,60 @@ pub fn default(content string, title string, nav_html string, lang string, page_
             });
         }
     </script>
+    <!-- Shiki Syntax Highlighting -->
+    <script type="module">
+        import { codeToHtml } from "https://esm.sh/shiki@3.0.0";
+        
+        // Store original code content for re-highlighting
+        const originalCodes = [];
+        
+        async function highlightCode(isReHighlight = false) {
+            const isDark = document.documentElement.classList.contains("dark");
+            const theme = isDark ? "github-dark" : "github-light";
+            
+            if (!isReHighlight) {
+                // First time: collect all code blocks
+                const codeBlocks = document.querySelectorAll("pre code");
+                for (const code of codeBlocks) {
+                    const langClass = code.className.match(/language-([a-z]+)/);
+                    const lang = langClass ? langClass[1] : "text";
+                    const langMap = { "js": "javascript", "ts": "typescript", "sh": "bash", "shell": "bash" };
+                    originalCodes.push({
+                        code: code.textContent,
+                        lang: langMap[lang] || lang,
+                        pre: code.parentElement
+                    });
+                }
+            }
+            
+            // Highlight all stored code blocks
+            for (let i = 0; i < originalCodes.length; i++) {
+                const { code, lang, pre } = originalCodes[i];
+                try {
+                    const html = await codeToHtml(code, { lang, theme });
+                    const wrapper = document.createElement("div");
+                    wrapper.innerHTML = html;
+                    const newPre = wrapper.firstChild;
+                    newPre.className = "shiki-highlighted";
+                    newPre.dataset.shikiIndex = i;
+                    
+                    // Find current element (might have been replaced)
+                    const current = document.querySelector("[data-shiki-index=\'" + i + "\']") || pre;
+                    current.replaceWith(newPre);
+                    originalCodes[i].pre = newPre;
+                } catch (e) {
+                    console.warn("Shiki: Could not highlight", lang, e.message);
+                }
+            }
+        }
+        
+        // Run on load
+        highlightCode(false);
+        // Expose for theme toggle
+        window.shikiHighlight = () => highlightCode(true);
+    </script>
 </body>
 </html>
     '
 }
+

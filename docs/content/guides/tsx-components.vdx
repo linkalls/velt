@@ -1,21 +1,21 @@
 +++
-title = "TSX コンポーネント"
+title = "TSX Components"
 layout = "default"
 +++
 
-# TSX コンポーネント
+# TSX Components
 
-VeltはV言語のコンポーネントに加えて、TSX（TypeScript + JSX）でもコンポーネントを書くことができます。
+In addition to V components, Velt supports writing components in TSX (TypeScript + JSX).
 
-## なぜ TSX？
+## Why TSX?
 
-- **TypeScript の型安全性** - プロップスの型チェック
-- **既存資産の活用** - React コンポーネントの経験を活かせる
-- **エコシステム** - npm パッケージとの連携
+- **TypeScript Type Safety** - Prop type checking
+- **Leverage Existing Skills** - Use React/TypeScript knowledge
+- **Ecosystem** - npm package integration
 
-## TSX コンポーネントの書き方
+## Writing TSX Components
 
-### 基本構成
+### Basic Structure
 
 ```tsx
 // components/Hero.tsx
@@ -46,7 +46,7 @@ export default function Hero({
 }
 ```
 
-### VDX での使用
+### Using in VDX
 
 ```markdown
 +++
@@ -62,29 +62,70 @@ title = "My Site"
 />
 ```
 
-## 必要な環境
+## Requirements
 
-TSX コンポーネントを使用するには Bun が必要です：
+TSX components require Bun:
 
 ```bash
-# Bun のインストール
+# Install Bun
 curl -fsSL https://bun.sh/install | bash
 
-# 確認
+# Verify installation
 bun --version
 ```
 
-## V vs TSX
+## V vs TSX Comparison
 
-| 特徴 | V コンポーネント | TSX コンポーネント |
-|------|------------------|-------------------|
-| 型安全性 | ✅ | ✅ |
-| ビルド速度 | ⚡ 高速 | 🔧 Bun 依存 |
-| 学習コスト | V の知識必要 | React/TS 知識で OK |
-| 依存関係 | なし | Bun, React |
+| Feature | V Components | TSX Components |
+|---------|--------------|----------------|
+| Type Safety | ✅ | ✅ |
+| Build Speed | ⚡ Fast | 🔧 Needs Bun |
+| Learning Curve | V knowledge required | React/TS knowledge |
+| Dependencies | None | Bun, React |
 
-## ベストプラクティス
+## Best Practices
 
-1. **シンプルなコンポーネント** → V で書く
-2. **複雑なロジック・状態管理** → TSX で書く
-3. **混在使用** → 同じプロジェクトで両方使える
+1. **Simple components** → Write in V
+2. **Complex logic/state** → Write in TSX
+3. **Mixed usage** → Both work in the same project
+
+## Example: Feature Card
+
+```tsx
+// components/FeatureCard.tsx
+interface FeatureCardProps {
+  icon: string;
+  title: string;
+  description: string;
+  link?: string;
+}
+
+export default function FeatureCard({ 
+  icon, 
+  title, 
+  description, 
+  link 
+}: FeatureCardProps) {
+  const content = (
+    <div className="feature-card">
+      <span className="feature-icon">{icon}</span>
+      <h3 className="feature-title">{title}</h3>
+      <p className="feature-desc">{description}</p>
+    </div>
+  );
+
+  return link 
+    ? <a href={link} className="feature-card-link">{content}</a>
+    : content;
+}
+```
+
+Usage in VDX:
+
+```markdown
+<FeatureCard
+  icon="⚡"
+  title="Blazing Fast"
+  description="V compiles to native code for incredible speed"
+/>
+```

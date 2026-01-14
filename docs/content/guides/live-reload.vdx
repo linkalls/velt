@@ -1,0 +1,63 @@
++++
+title = "Live Reload"
+layout = "default"
++++
+
+# Live Reload
+
+Velt includes a built-in live reload feature for a smooth development experience.
+
+## How It Works
+
+When you run `velt dev`, the development server:
+
+1. **Watches** all `.vdx`, `.v`, and `.css` files
+2. **Rebuilds** automatically on file changes
+3. **Refreshes** the browser instantly
+
+```bash
+# Start development server with live reload
+velt dev
+```
+
+## What Gets Reloaded
+
+| File Type | Action |
+|-----------|--------|
+| `.vdx` content files | Rebuild & reload page |
+| `.v` layout/component files | Full rebuild |
+| `.css` style files | Hot style injection |
+| `assets/*` | Copy & reload |
+
+## Configuration
+
+Live reload is enabled by default. The server runs on port `3000`:
+
+```
+Starting Velt Dev Server at http://localhost:3000
+Starting watcher...
+[veb] Running app on http://localhost:3000/
+```
+
+## How It's Implemented
+
+Velt uses V's built-in `os.watch` for file monitoring:
+
+```v
+// Simplified watch implementation
+fn watch_files() {
+    mut watcher := os.watch('content', fn (event os.WatchEvent) {
+        if event.path.ends_with('.vdx') {
+            rebuild(event.path)
+            send_reload_signal()
+        }
+    })
+    watcher.run()
+}
+```
+
+## Tips
+
+1. **Keep the terminal visible** - Watch for build errors
+2. **Save frequently** - Changes apply instantly
+3. **Check console** - Browser console shows reload events

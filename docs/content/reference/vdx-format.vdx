@@ -1,0 +1,154 @@
++++
+title = "VDX File Format"
+layout = "default"
++++
+
+# VDX File Format
+
+VDX (Velt Document eXtension) is Velt's content file format that combines Markdown with V components.
+
+## File Structure
+
+A VDX file has two parts:
+
+1. **Frontmatter** - TOML metadata between `+++` markers
+2. **Content** - Markdown with embedded components
+
+```markdown
++++
+layout = "default"
+title = "My Page"
++++
+
+# Welcome
+
+This is Markdown content.
+
+<Callout type_="info">
+This is a V component!
+</Callout>
+```
+
+## Frontmatter
+
+Frontmatter is written in TOML format:
+
+```toml
++++
+layout = "default"
+title = "Page Title"
+date = "2024-01-14"
+author = "Your Name"
++++
+```
+
+### Available Fields
+
+| Field | Required | Description |
+|-------|----------|-------------|
+| `layout` | ✅ | Layout template to use |
+| `title` | ✅ | Page title (used in navigation) |
+| `date` | ❌ | Publish date |
+| `author` | ❌ | Author name |
+
+## Markdown Support
+
+VDX supports standard Markdown plus GFM (GitHub Flavored Markdown):
+
+### Headers
+
+```markdown
+# H1
+## H2
+### H3
+```
+
+### Text Formatting
+
+```markdown
+**bold** and *italic*
+`inline code`
+[links](https://example.com)
+```
+
+### Code Blocks
+
+````markdown
+```typescript
+const greeting = "Hello, World!";
+console.log(greeting);
+```
+````
+
+### Lists
+
+```markdown
+- Unordered item
+- Another item
+
+1. Ordered item
+2. Another item
+```
+
+### Tables (GFM)
+
+```markdown
+| Header 1 | Header 2 |
+|----------|----------|
+| Cell 1   | Cell 2   |
+```
+
+## Embedding Components
+
+Use JSX-like syntax to embed V components:
+
+```markdown
+<ComponentName prop="value" />
+
+<ComponentName prop="value">
+Child content here
+</ComponentName>
+```
+
+### Self-Closing Tags
+
+```markdown
+<Hero title="Welcome" />
+```
+
+### With Children
+
+```markdown
+<Callout type_="warning">
+**Warning:** This is important!
+</Callout>
+```
+
+### Props
+
+- Strings: `prop="value"`
+- Expressions: `prop={expression}`
+- Boolean: `enabled={true}`
+
+## File Naming
+
+### Standard Files
+
+```
+content/
+├── index.vdx           → /index.html
+├── docs.vdx            → /docs.html
+└── guides/
+    └── layouts.vdx     → /guides/layouts.html
+```
+
+### Localized Files
+
+```
+content/
+├── docs.vdx            → /docs.html (English)
+├── docs.ja.vdx         → /docs.ja.html (Japanese)
+└── guides/
+    ├── layouts.vdx     → /guides/layouts.html
+    └── layouts.ja.vdx  → /guides/layouts.ja.html
+```

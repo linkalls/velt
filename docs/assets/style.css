@@ -705,6 +705,158 @@ footer a {
 }
 
 /* ─────────────────────────────────────────────────────────────────────
+   TSX Code Demo Component
+   ───────────────────────────────────────────────────────────────────── */
+.code-demo {
+    margin: 2rem 0;
+    border: 1px solid var(--border-default);
+    border-radius: 12px;
+    overflow: hidden;
+    background: var(--bg-secondary);
+    box-shadow: var(--shadow-sm);
+}
+
+.code-demo-header {
+    padding: 1rem 1.5rem;
+    background: var(--bg-tertiary);
+    border-bottom: 1px solid var(--border-default);
+}
+
+.code-demo-title {
+    margin: 0 0 0.25rem 0;
+    font-size: 1.1rem;
+    color: var(--text-primary);
+}
+
+.code-demo-desc {
+    margin: 0;
+    font-size: 0.9rem;
+    color: var(--text-muted);
+}
+
+.code-demo-content pre {
+    margin: 0;
+    border-radius: 0;
+    border: none;
+}
+
+.code-demo-output {
+    padding: 1rem 1.5rem;
+    background: var(--bg-primary);
+    border-top: 1px solid var(--border-default);
+}
+
+.output-label {
+    display: block;
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--text-muted);
+    margin-bottom: 0.5rem;
+}
+
+.output-content {
+    padding: 1rem;
+    background: var(--bg-secondary);
+    border-radius: 8px;
+    border: 1px solid var(--border-default);
+}
+
+/* ─────────────────────────────────────────────────────────────────────
+   TSX Feature Card Component
+   ───────────────────────────────────────────────────────────────────── */
+.feature-card {
+    padding: 1.5rem;
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-default);
+    border-radius: 12px;
+    transition: all var(--transition-base);
+}
+
+.feature-card:hover {
+    border-color: var(--accent-primary);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-glow);
+}
+
+.feature-icon {
+    font-size: 2rem;
+    display: block;
+    margin-bottom: 0.75rem;
+}
+
+.feature-title {
+    margin: 0 0 0.5rem 0;
+    font-size: 1.1rem;
+    color: var(--text-primary);
+}
+
+.feature-desc {
+    margin: 0;
+    font-size: 0.9rem;
+    color: var(--text-muted);
+    line-height: 1.6;
+}
+
+.feature-card-link {
+    text-decoration: none;
+    display: block;
+}
+
+.feature-card-link:hover {
+    text-decoration: none;
+}
+
+/* Feature grid layout */
+.feature-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1.5rem;
+    margin: 2rem 0;
+}
+
+/* ─────────────────────────────────────────────────────────────────────
+   Prism.js Dark Mode Override
+   ───────────────────────────────────────────────────────────────────── */
+html.dark pre[class*="language-"],
+html.dark code[class*="language-"] {
+    background: #1a1a2e;
+    color: #e0e0e0;
+}
+
+html.dark .token.comment,
+html.dark .token.prolog,
+html.dark .token.doctype,
+html.dark .token.cdata {
+    color: #6a9955;
+}
+
+html.dark .token.keyword {
+    color: #c586c0;
+}
+
+html.dark .token.string {
+    color: #ce9178;
+}
+
+html.dark .token.function {
+    color: #dcdcaa;
+}
+
+html.dark .token.number {
+    color: #b5cea8;
+}
+
+html.dark .token.operator {
+    color: #d4d4d4;
+}
+
+html.dark .token.class-name {
+    color: #4ec9b0;
+}
+
+/* ─────────────────────────────────────────────────────────────────────
    Responsive Design
    ───────────────────────────────────────────────────────────────────── */
 @media (max-width: 1024px) {

@@ -1,76 +1,97 @@
 +++
-title = "テーマシステム"
+title = "Theme System"
 layout = "default"
 +++
 
-# テーマシステム
+# Theme System
 
-Veltは複数のテーマをサポートしています。プロジェクト作成時にテーマを選択できます。
+Velt supports multiple themes. You can choose a theme when creating a project.
 
-## 利用可能なテーマ
+## Available Themes
 
-| テーマ | 説明 | 用途 |
-|--------|------|------|
-| `docs` | ドキュメントサイト向け | API リファレンス、ガイド |
-| `blog` | ブログ向け | 個人ブログ、技術ブログ |
+| Theme | Description | Use Case |
+|-------|-------------|----------|
+| `docs` | Documentation site | API references, guides |
+| `blog` | Blog with posts | Personal blogs, tech blogs |
 
-## テーマの指定
+## Specifying a Theme
 
-### プロジェクト作成時
+### At Project Creation
 
 ```bash
-# デフォルト（docs テーマ）
-velt new my-docs
+# Create a documentation site
+velt new my-docs --theme docs
 
-# ブログテーマ
+# Create a blog
 velt new my-blog --theme blog
 ```
 
-## テーマ構成
+### Theme Structure
 
-各テーマは以下のディレクトリ構成を持ちます：
+Each theme includes:
 
 ```
 themes/<theme-name>/
-├── layouts/       # レイアウトファイル (.v)
-├── assets/        # CSS ファイル
-├── components/    # コンポーネント (.v, .tsx)
-└── content/       # サンプルコンテンツ (.vdx)
+├── layouts/
+│   ├── default.v      # Default layout
+│   └── ...            # Theme-specific layouts
+├── components/
+│   └── ...            # Theme components
+├── assets/
+│   └── style.css      # Theme styles
+└── content/
+    └── index.vdx      # Sample content
 ```
 
-## Docs テーマ
+## Customizing Themes
 
-ドキュメントサイト向けのテーマです。
+### CSS Variables
 
-**レイアウト:**
-- `default.v` - サイドバー付きドキュメントページ
-- `landing.v` - ランディングページ
+Themes use CSS custom properties for easy customization:
 
-**コンポーネント:**
-- `Hero` - ヒーローセクション
-- `FeaturesSection` - 機能紹介グリッド
-- `Callout` - 注意書きボックス
+```css
+:root {
+    /* Colors */
+    --accent-primary: #6366f1;
+    --accent-secondary: #8b5cf6;
+    
+    /* Typography */
+    --font-sans: 'Inter', sans-serif;
+    --font-mono: 'JetBrains Mono', monospace;
+    
+    /* Spacing */
+    --sidebar-width: 280px;
+    --content-max-width: 820px;
+}
+```
 
-## Blog テーマ
+### Dark Mode
 
-ブログ向けのテーマです。
+Velt themes include built-in dark mode support:
 
-**レイアウト:**
-- `post.v` - 記事ページ（date, author 対応）
-- `list.v` - 記事一覧ページ
+```css
+html.dark {
+    --bg-primary: #09090b;
+    --bg-secondary: #0f0f11;
+    --text-primary: #fafafa;
+}
+```
 
-**コンポーネント:**
-- `PostCard` - 記事カード
+Dark mode is automatically toggled based on:
+1. User preference stored in `localStorage`
+2. System preference via `prefers-color-scheme`
 
-### ブログ記事の作成
+## Creating Custom Themes
 
-```markdown
-+++
-layout = "post"
-title = "記事タイトル"
-date = "2024-01-14"
-author = "著者名"
-+++
+1. Copy an existing theme as a starting point
+2. Modify layouts in `layouts/`
+3. Update styles in `assets/`
+4. Add custom components in `components/`
 
-記事の本文をここに書きます。
+```bash
+# Copy docs theme as base
+cp -r themes/docs themes/my-theme
+
+# Edit the theme
+code themes/my-theme/
 ```

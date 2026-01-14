@@ -1,0 +1,166 @@
++++
+title = "Markdown Reference"
+layout = "default"
++++
+
+# Markdown Reference
+
+Velt supports standard Markdown plus GitHub Flavored Markdown (GFM) extensions.
+
+## Text Formatting
+
+```markdown
+**Bold text**
+*Italic text*
+***Bold and italic***
+~~Strikethrough~~
+`inline code`
+```
+
+**Bold text**, *Italic text*, ***Bold and italic***, ~~Strikethrough~~, `inline code`
+
+## Headers
+
+```markdown
+# Heading 1
+## Heading 2
+### Heading 3
+#### Heading 4
+```
+
+## Links
+
+```markdown
+[Link text](https://example.com)
+[Link with title](https://example.com "Title")
+```
+
+[Link text](https://example.com)
+
+## Images
+
+```markdown
+![Alt text](/path/to/image.png)
+![Alt text](/path/to/image.png "Optional title")
+```
+
+## Lists
+
+### Unordered
+
+```markdown
+- Item 1
+- Item 2
+  - Nested item
+  - Another nested
+- Item 3
+```
+
+- Item 1
+- Item 2
+  - Nested item
+  - Another nested
+- Item 3
+
+### Ordered
+
+```markdown
+1. First item
+2. Second item
+3. Third item
+```
+
+1. First item
+2. Second item
+3. Third item
+
+## Code
+
+### Inline Code
+
+```markdown
+Use `backticks` for inline code.
+```
+
+### Code Blocks
+
+Use triple backticks with optional language:
+
+````markdown
+```javascript
+function greet(name) {
+  return `Hello, ${name}!`;
+}
+```
+````
+
+```javascript
+function greet(name) {
+  return `Hello, ${name}!`;
+}
+```
+
+### Supported Languages
+
+Velt includes syntax highlighting for:
+
+| Language | Identifier |
+|----------|------------|
+| JavaScript | `javascript`, `js` |
+| TypeScript | `typescript`, `ts` |
+| TSX/JSX | `tsx`, `jsx` |
+| HTML | `html` |
+| CSS | `css` |
+| Bash | `bash`, `shell` |
+| JSON | `json` |
+| TOML | `toml` |
+| Markdown | `markdown`, `md` |
+| V | `v` |
+
+## Tables (GFM)
+
+```markdown
+| Name    | Type   | Default |
+|---------|--------|---------|
+| `title` | string | -       |
+| `count` | number | 0       |
+```
+
+| Name    | Type   | Default |
+|---------|--------|---------|
+| `title` | string | -       |
+| `count` | number | 0       |
+
+## Blockquotes
+
+```markdown
+> This is a blockquote.
+> It can span multiple lines.
+>
+> And have multiple paragraphs.
+```
+
+> This is a blockquote.
+> It can span multiple lines.
+>
+> And have multiple paragraphs.
+
+## Horizontal Rules
+
+```markdown
+---
+```
+
+---
+
+## Task Lists (GFM)
+
+```markdown
+- [x] Completed task
+- [ ] Incomplete task
+- [ ] Another task
+```
+
+- [x] Completed task
+- [ ] Incomplete task
+- [ ] Another task
