@@ -1,0 +1,124 @@
++++
+title = "ブログの作成"
+layout = "default"
++++
+
+# ブログの作成
+
+Velt のブログテーマを使って、美しいブログサイトを構築できます。
+
+## クイックスタート
+
+```bash
+# ブログプロジェクトの作成
+velt new my-blog --theme blog
+
+# ディレクトリに移動
+cd my-blog
+
+# 開発サーバー起動
+velt dev
+```
+
+## ディレクトリ構成
+
+```
+my-blog/
+├── content/
+│   ├── index.vdx          # トップページ（記事一覧）
+│   └── posts/
+│       └── hello-world.vdx  # 記事
+├── layouts/
+│   ├── post.v             # 記事ページレイアウト
+│   └── list.v             # 一覧ページレイアウト
+├── components/
+│   └── PostCard.v         # 記事カード
+└── assets/
+    └── blog.css           # スタイル
+```
+
+## 記事の書き方
+
+### Frontmatter
+
+記事ファイルの先頭に frontmatter を記述します：
+
+```markdown
++++
+layout = "post"
+title = "記事のタイトル"
+date = "2024-01-14"
+author = "著者名"
++++
+
+ここから記事の本文を書きます。
+```
+
+### 利用可能なフィールド
+
+| フィールド | 必須 | 説明 |
+|-----------|------|------|
+| `layout` | ✅ | `"post"` を指定 |
+| `title` | ✅ | 記事タイトル |
+| `date` | ✅ | 公開日（YYYY-MM-DD） |
+| `author` | ❌ | 著者名 |
+
+## 記事一覧ページ
+
+`content/index.vdx` で PostCard コンポーネントを使います：
+
+```markdown
++++
+layout = "list"
+title = "Blog"
++++
+
+# 最新の記事
+
+<PostCard
+  title="Hello World"
+  excerpt="最初の記事です。"
+  date="2024-01-14"
+  url="./posts/hello-world.html"
+/>
+```
+
+## カスタマイズ
+
+### スタイルの変更
+
+`assets/blog.css` を編集してスタイルをカスタマイズできます：
+
+```css
+/* 記事タイトルのスタイル */
+.post-title {
+  font-size: 2.5rem;
+  background: var(--accent-gradient);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* カード hover エフェクト */
+.post-card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
+```
+
+### 新しいコンポーネントの追加
+
+`components/` に新しい V ファイルを追加できます：
+
+```v
+// components/Tag.v
+module components
+
+pub struct Tag {
+pub:
+  name string
+}
+
+pub fn (t Tag) render() string {
+  return '<span class="tag">${t.name}</span>'
+}
+```

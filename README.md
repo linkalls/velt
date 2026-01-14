@@ -10,6 +10,7 @@ It leverages the performance and type safety of V to build blazing fast websites
 - **Blazingly Fast**: Powered by the V compiler. Millisecond build times.
 - **VDX Format**: Markdown with embedded V components (similar to MDX).
 - **Live Reload**: Built-in development server with instant updates.
+- **Automatic Navigation**: Automatically generates sidebar navigation from your content structure.
 
 ## 📦 Installation
 
@@ -51,11 +52,11 @@ The static site will be generated in the `dist/` directory, ready to be deployed
 ```text
 /my-project
 ├── v.mod             # Project dependencies
-├── velt.config.v     # Configuration (future)
+├── velt.config.v     # Configuration (Planned)
 ├── /components       # User components (.v)
-│   └── card.v        # struct Card { ... }
+│   └── Callout.v     # struct Callout { ... }
 ├── /layouts          # Page layouts (.v)
-│   └── default.v     # fn default(content string) string
+│   └── default.v     # fn default(content, title, nav) string
 ├── /content          # Content files (.vdx)
 │   ├── index.vdx     # -> dist/index.html
 │   └── docs.vdx      # -> dist/docs.html
@@ -66,19 +67,19 @@ The static site will be generated in the `dist/` directory, ready to be deployed
 
 Components are standard V structs defined in the `components` module.
 
-**1. Define a component (`components/alert.v`):**
+**1. Define a component (`components/Callout.v`):**
 
 ```v
 module components
 
-pub struct Alert {
+pub struct Callout {
 pub:
     type_   string = 'info' // Use 'type_' to avoid keyword conflict
-    message string
+    content string          // Children content is injected here
 }
 
-pub fn (a Alert) render() string {
-    return '<div class="alert alert-${a.type_}">${a.message}</div>'
+pub fn (c Callout) render() string {
+    return '<div class="callout callout-${c.type_}">${c.content}</div>'
 }
 ```
 
@@ -87,24 +88,29 @@ pub fn (a Alert) render() string {
 ```markdown
 # Welcome
 
-<Alert type_="warning" message="This is a V component!" />
+<Callout type_="warning">
+  This is a V component with **Markdown** inside!
+</Callout>
 ```
 
 ## 🎨 Layouts
 
-Layouts are V functions that wrap your page content.
+Layouts are V functions that wrap your page content. They receive the page content, title, and auto-generated navigation HTML.
 
 **`layouts/default.v`:**
 
 ```v
 module layouts
 
-pub fn default(content string) string {
+pub fn default(content string, title string, nav_html string) string {
     return '
     <!DOCTYPE html>
     <html>
+        <head>
+            <title>${title}</title>
+        </head>
         <body>
-            <nav>...</nav>
+            <nav>${nav_html}</nav>
             <main>${content}</main>
         </body>
     </html>

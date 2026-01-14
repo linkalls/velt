@@ -35,6 +35,9 @@ Learn how to use Velt effectively:
 - [Layouts](guides/layouts.html) - Customize your site's HTML structure
 - [Components](guides/components.html) - Create reusable building blocks
 - [Styling](guides/styling.html) - Style your site with CSS
+- [Themes](guides/themes.html) - Use built-in themes (docs, blog)
+- [TSX Components](guides/tsx-components.html) - Write components in TypeScript
+- [Creating a Blog](guides/blog.html) - Build a blog with Velt
 
 ## Reference
 

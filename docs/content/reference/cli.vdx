@@ -9,26 +9,36 @@ Complete reference for Velt command-line interface.
 
 ## Commands
 
-### `velt new <name>`
+### `velt new <name> [--theme <theme>]`
 
 Create a new Velt project.
 
 ```bash
-./velt new my-website
+# Default (docs theme)
+velt new my-website
+
+# With blog theme
+velt new my-blog --theme blog
 ```
 
+**Available Themes:**
+| Theme | Description |
+|-------|-------------|
+| `docs` | Documentation site (default) |
+| `blog` | Personal blog with posts |
+
 Creates a new directory with:
-- `content/index.vdx` - Sample page
-- `layouts/default.v` - Default layout
-- `components/callout.v` - Sample component
-- `assets/style.css` - Base styles
+- `content/` - Sample pages
+- `layouts/` - Theme layouts
+- `components/` - Theme components
+- `assets/` - CSS styles
 
 ### `velt dev`
 
-Start the development server.
+Start the development server with live reload.
 
 ```bash
-./velt dev
+velt dev
 ```
 
 Options:
@@ -45,20 +55,37 @@ The dev server automatically rebuilds when you save changes.
 Build the site for production.
 
 ```bash
-./velt build
+velt build
 ```
 
 Generates static HTML files in `dist/` directory.
 
-### `velt serve`
+### `velt serve [port]`
 
 Start a simple HTTP server for the built site.
 
 ```bash
-./velt serve
+velt serve       # Port 3000
+velt serve 8080  # Custom port
 ```
 
 Serves the `dist/` directory without live reload.
+
+## Frontmatter Fields
+
+### Common Fields
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `layout` | string | Layout to use (default, landing, post, list) |
+| `title` | string | Page title |
+
+### Blog-specific Fields
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `date` | string | Publish date (YYYY-MM-DD) |
+| `author` | string | Author name |
 
 ## Environment Variables
 
@@ -76,11 +103,16 @@ Serves the `dist/` directory without live reload.
 ## Examples
 
 ```bash
-# Create and develop
-./velt new blog
-cd blog
-../velt dev
+# Create docs site
+velt new my-docs
+cd my-docs
+velt dev
+
+# Create blog
+velt new my-blog --theme blog
+cd my-blog
+velt dev
 
 # Build for deployment
-../velt build
+velt build
 ```

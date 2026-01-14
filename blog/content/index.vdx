@@ -1,0 +1,15 @@
++++
+layout = "list"
+title = "Blog"
++++
+
+# Latest Posts
+
+Welcome to the blog. Here are the latest posts:
+
+<PostCard
+    title="Welcome to My Blog"
+    excerpt="This is your first blog post! Edit this file to start writing."
+    date="2024-01-14"
+    url="./hello-world.html"
+/>

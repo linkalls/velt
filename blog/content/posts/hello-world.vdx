@@ -1,0 +1,28 @@
++++
+layout = "post"
+title = "Welcome to My Blog"
+date = "2024-01-14"
+author = "Author Name"
++++
+
+This is your first blog post! Edit this file to start writing.
+
+## Getting Started
+
+Velt makes it easy to create beautiful blog posts using Markdown and custom components.
+
+### Features
+
+- **Dark Mode**: Automatic theme switching
+- **Typography**: Beautiful, readable fonts
+- **Code Highlighting**: Great for technical posts
+
+```v
+fn main() {
+    println('Hello from Velt!')
+}
+```
+
+## What's Next?
+
+Start creating more posts in the `content/posts/` directory!

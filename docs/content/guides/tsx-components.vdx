@@ -1,0 +1,90 @@
++++
+title = "TSX コンポーネント"
+layout = "default"
++++
+
+# TSX コンポーネント
+
+VeltはV言語のコンポーネントに加えて、TSX（TypeScript + JSX）でもコンポーネントを書くことができます。
+
+## なぜ TSX？
+
+- **TypeScript の型安全性** - プロップスの型チェック
+- **既存資産の活用** - React コンポーネントの経験を活かせる
+- **エコシステム** - npm パッケージとの連携
+
+## TSX コンポーネントの書き方
+
+### 基本構成
+
+```tsx
+// components/Hero.tsx
+interface HeroProps {
+  title: string;
+  subtitle?: string;
+  btnText?: string;
+  btnLink?: string;
+}
+
+export default function Hero({ 
+  title, 
+  subtitle, 
+  btnText, 
+  btnLink 
+}: HeroProps) {
+  return (
+    <section className="hero">
+      <h1 className="hero-title">{title}</h1>
+      {subtitle && <p className="hero-subtitle">{subtitle}</p>}
+      {btnText && btnLink && (
+        <a href={btnLink} className="btn btn-primary">
+          {btnText}
+        </a>
+      )}
+    </section>
+  );
+}
+```
+
+### VDX での使用
+
+```markdown
++++
+layout = "landing"
+title = "My Site"
++++
+
+<Hero
+  title="Welcome"
+  subtitle="This is my site"
+  btnText="Get Started"
+  btnLink="./docs.html"
+/>
+```
+
+## 必要な環境
+
+TSX コンポーネントを使用するには Bun が必要です：
+
+```bash
+# Bun のインストール
+curl -fsSL https://bun.sh/install | bash
+
+# 確認
+bun --version
+```
+
+## V vs TSX
+
+| 特徴 | V コンポーネント | TSX コンポーネント |
+|------|------------------|-------------------|
+| 型安全性 | ✅ | ✅ |
+| ビルド速度 | ⚡ 高速 | 🔧 Bun 依存 |
+| 学習コスト | V の知識必要 | React/TS 知識で OK |
+| 依存関係 | なし | Bun, React |
+
+## ベストプラクティス
+
+1. **シンプルなコンポーネント** → V で書く
+2. **複雑なロジック・状態管理** → TSX で書く
+3. **混在使用** → 同じプロジェクトで両方使える

@@ -7,10 +7,22 @@ fn main() {
         match os.args[1] {
             'new' {
                 if os.args.len < 3 {
-                    println('Usage: velt new <project_name>')
+                    println('Usage: velt new <project_name> [--theme <theme>]')
                     return
                 }
-                cmd_new(os.args[2]) or { panic(err) }
+                mut theme := 'docs'  // default theme
+                mut project_name := os.args[2]
+                
+                // Parse --theme flag
+                for i := 2; i < os.args.len; i++ {
+                    if os.args[i] == '--theme' && i + 1 < os.args.len {
+                        theme = os.args[i + 1]
+                    } else if !os.args[i].starts_with('--') {
+                        project_name = os.args[i]
+                    }
+                }
+                
+                cmd_new(project_name, theme) or { panic(err) }
                 return
             }
             'dev' {
@@ -82,7 +94,8 @@ fn print_help() {
     println('    velt <command> [options]')
     println('')
     println('  COMMANDS:')
-    println('    new <name>     Create a new Velt project')
+    println('    new <name> [--theme <theme>]  Create a new Velt project')
+    println('                                   Themes: docs (default), blog')
     println('    build          Build the site to dist/')
     println('    dev            Watch mode with auto-rebuild')
     println('    serve [port]   Start dev server (default: 3000)')
@@ -90,6 +103,7 @@ fn print_help() {
     println('')
     println('  EXAMPLES:')
     println('    velt new my-docs')
+    println('    velt new my-blog --theme blog')
     println('    velt build')
     println('    velt serve 8080')
     println('')

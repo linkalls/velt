@@ -39,19 +39,45 @@ fn watch_and_rebuild(cb fn ()) {
 
 fn build_all() {
 	files := os.walk_ext('content', '.vdx')
-	nav_html := collect_nav_items(files)
+	// Collect nav items by language
+	nav_html_en := collect_nav_items(files, '')      // English (no lang suffix)
+	nav_html_ja := collect_nav_items(files, 'ja')    // Japanese
 	for file in files {
-		build_one(file, nav_html)
+		// Detect language from filename (e.g., docs.ja.vdx -> ja)
+		lang := detect_language(file)
+		nav_html := if lang == 'ja' { nav_html_ja } else { nav_html_en }
+		build_one(file, nav_html, lang)
 	}
+}
+
+// Detect language from filename pattern: name.lang.vdx
+fn detect_language(file string) string {
+	normalized := file.replace('\\', '/')
+	base := normalized.split('/').last() // e.g., "docs.ja.vdx"
+	parts := base.replace('.vdx', '').split('.')
+	if parts.len >= 2 {
+		lang := parts.last()
+		if lang == 'ja' || lang == 'en' || lang == 'zh' || lang == 'ko' {
+			return lang
+		}
+	}
+	return ''  // Default to English (no suffix)
 }
 
 // Collect navigation items from all content files
 // Excludes pages with layout="landing" and reflects directory structure
-fn collect_nav_items(files []string) string {
+// filter_lang: 'ja', 'en', '' (empty = no language suffix = English)
+fn collect_nav_items(files []string, filter_lang string) string {
 	mut nav_items := []string{}
 	mut dirs := map[string][]string{}  // dir -> list of nav items
 	
 	for file in files {
+		// Filter by language
+		file_lang := detect_language(file)
+		if file_lang != filter_lang {
+			continue
+		}
+		
 		content := os.read_file(file) or { continue }
 		mut title := ''
 		mut layout := 'default'
@@ -90,7 +116,14 @@ fn collect_nav_items(files []string) string {
 			// Get last part after /
 			parts := base.split('/')
 			name := parts[parts.len - 1]
-			title = name.replace('_', ' ').replace('-', ' ')
+			// Remove language suffix from title (e.g., "docs.ja" -> "docs")
+			name_parts := name.split('.')
+			clean_name := if name_parts.len > 1 && name_parts.last() in ['ja', 'en', 'zh', 'ko'] {
+				name_parts[..name_parts.len - 1].join('.')
+			} else {
+				name
+			}
+			title = clean_name.replace('_', ' ').replace('-', ' ')
 			// Capitalize first letter
 			if title.len > 0 {
 				title = title[0..1].to_upper() + title[1..]
@@ -131,7 +164,7 @@ fn collect_nav_items(files []string) string {
 	return result.join('\n                ')
 }
 
-fn build_one(file string, nav_html string) {
+fn build_one(file string, nav_html string, lang string) {
 	println('Processing ${file}...')
 	content := os.read_file(file) or {
 		println('Error reading file: ${err}')
@@ -141,6 +174,8 @@ fn build_one(file string, nav_html string) {
 	// Parse frontmatter (TOML between +++ markers)
 	mut layout := 'default'
 	mut title := ''
+	mut date := ''
+	mut author := ''
 	mut body := content
 
 	if content.starts_with('+++') {
@@ -158,6 +193,10 @@ fn build_one(file string, nav_html string) {
 						layout = value
 					} else if key == 'title' {
 						title = value
+					} else if key == 'date' {
+						date = value
+					} else if key == 'author' {
+						author = value
 					}
 				}
 			}
@@ -166,7 +205,9 @@ fn build_one(file string, nav_html string) {
 		}
 	}
 
-	segments := parse_velt_file(body)
+	// Normalize line endings (Windows CRLF -> LF)
+	normalized_body := body.replace('\r\n', '\n').replace('\r', '\n')
+	segments := parse_velt_file(normalized_body)
 
 	// Output path relative to dist/
 	normalized_file := file.replace('\\', '/')
@@ -179,7 +220,9 @@ fn build_one(file string, nav_html string) {
 		os.mkdir_all(output_dir) or {}
 	}
 
-	code := generate_v_code(segments, output_path, layout, title, nav_html)
+	// Compute page path for language switcher (e.g., docs.ja.html -> docs.html for EN, docs.html -> docs.ja.html for JA)
+	page_path := '/' + filename
+	code := generate_v_code(segments, output_path, layout, title, nav_html, date, author, lang, page_path)
 
 	// Use unique temp file name based on source file to avoid race conditions
 	// when building multiple files concurrently
@@ -205,7 +248,7 @@ fn build_one(file string, nav_html string) {
 		println('Successfully built ${output_path}')
 	}
 
-	// Clean up temp files
-	os.rm(gen_file) or {}
-	os.rm(gen_exe) or {}
+	// Clean up temp files (temporarily disabled for debugging)
+	// os.rm(gen_file) or {}
+	// os.rm(gen_exe) or {}
 }

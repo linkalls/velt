@@ -1,7 +1,9 @@
 module layouts
 
-pub fn landing(content string, title string, nav_html string, lang string, page_path string) string {
-    return '
+pub fn landing(content string, title string, nav_html string) string {
+	_ = title // unused but kept for API consistency
+	_ = nav_html
+	return '
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -33,15 +35,15 @@ pub fn landing(content string, title string, nav_html string, lang string, page_
             </button>
         </div>
     </nav>
-
+    
     <main class="landing-main">
         ${content}
     </main>
-
+    
     <footer class="landing-footer">
         <p>Built with <a href="https://github.com/vlang/v">V</a> • Powered by <a href="https://github.com/linkalls/velt">Velt</a></p>
     </footer>
-
+    
     <script>
         document.getElementById("theme-toggle").addEventListener("click", () => {
             document.documentElement.classList.toggle("dark");

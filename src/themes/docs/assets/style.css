@@ -511,50 +511,6 @@ li::marker {
 }
 
 /* ─────────────────────────────────────────────────────────────────────
-   Tables
-   ───────────────────────────────────────────────────────────────────── */
-table {
-    width: 100%;
-    margin: 1.5rem 0;
-    border-collapse: collapse;
-    border-radius: 12px;
-    overflow: hidden;
-    background: var(--bg-secondary);
-    border: 1px solid var(--border-default);
-    box-shadow: var(--shadow-sm);
-}
-
-thead {
-    background: var(--bg-tertiary);
-}
-
-th, td {
-    padding: 0.875rem 1rem;
-    text-align: left;
-    border-bottom: 1px solid var(--border-default);
-}
-
-th {
-    font-weight: 600;
-    font-size: 0.875rem;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-    color: var(--text-muted);
-}
-
-td {
-    color: var(--text-secondary);
-}
-
-tr:last-child td {
-    border-bottom: none;
-}
-
-tbody tr:hover {
-    background: var(--accent-primary-ghost);
-}
-
-/* ─────────────────────────────────────────────────────────────────────
    Code & Pre
    ───────────────────────────────────────────────────────────────────── */
 code {
@@ -758,41 +714,6 @@ footer a {
 
     .search-placeholder::before {
         display: none;
-    }
-
-    /* Mobile overflow fixes */
-    .content-area {
-        overflow-x: hidden;
-        max-width: 100%;
-        padding: 1.5rem 1rem;
-    }
-
-    pre {
-        max-width: calc(100vw - 2rem);
-        overflow-x: auto;
-        -webkit-overflow-scrolling: touch;
-    }
-
-    table {
-        display: block;
-        max-width: calc(100vw - 2rem);
-        overflow-x: auto;
-        -webkit-overflow-scrolling: touch;
-    }
-
-    p, li, td, th {
-        word-break: break-word;
-        overflow-wrap: break-word;
-    }
-
-    code {
-        word-break: break-all;
-    }
-
-    /* Language switcher active state */
-    .lang-option.active {
-        background: var(--accent-primary-ghost);
-        font-weight: 600;
     }
 }
 

@@ -1,10 +1,27 @@
 module layouts
 
-pub fn default(content string, title string, nav_html string) string {
+pub fn default(content string, title string, nav_html string, lang string, page_path string) string {
 	page_title := if title.len > 0 { '${title} - Velt' } else { 'Velt Docs' }
+	
+	// Generate language switcher URLs based on current page
+	// e.g., /docs.html -> /docs.ja.html, /docs.ja.html -> /docs.html
+	en_url := if lang == 'ja' {
+		// Japanese page -> English: remove .ja from path
+		page_path.replace('.ja.html', '.html')
+	} else {
+		page_path
+	}
+	ja_url := if lang == 'ja' {
+		page_path
+	} else {
+		// English page -> Japanese: add .ja before .html
+		page_path.replace('.html', '.ja.html')
+	}
+	current_lang_display := if lang == 'ja' { 'JA' } else { 'EN' }
+	
 	return '
 <!DOCTYPE html>
-<html lang="en">
+<html lang="${if lang == 'ja' { 'ja' } else { 'en' }}">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -40,11 +57,11 @@ pub fn default(content string, title string, nav_html string) string {
                     <div class="lang-switcher">
                         <button class="lang-btn" aria-label="Switch Language">
                             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
-                            <span>EN</span>
+                            <span>${current_lang_display}</span>
                         </button>
                         <div class="lang-dropdown">
-                            <a href="/docs.html" class="lang-option">🇬🇧 English</a>
-                            <a href="/ja/docs.html" class="lang-option">🇯🇵 日本語</a>
+                            <a href="${en_url}" class="lang-option${if lang != 'ja' { ' active' } else { '' }}">🇬🇧 English</a>
+                            <a href="${ja_url}" class="lang-option${if lang == 'ja' { ' active' } else { '' }}">🇯🇵 日本語</a>
                         </div>
                     </div>
                     <button id="theme-toggle" aria-label="Toggle Dark Mode">
