@@ -1,0 +1,9 @@
+{
+  "chat.tools.terminal.autoApprove": {
+    "bun": true
+  },
+  "cSpell.words": [
+    "name"
+  ],
+  "git.ignoreLimitWarning": true
+}
