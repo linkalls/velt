@@ -26,9 +26,7 @@ fn main() {
                 return
             }
             'dev' {
-                mut app := &App{
-                    reload_chan: chan bool{}
-                }
+                mut app := &App{}
                 spawn watch_and_rebuild(fn [mut app] () {
                     app.notify_reload()
                 })
@@ -44,9 +42,7 @@ fn main() {
                         port = 3000
                     }
                 }
-                mut app := &App{
-                    reload_chan: chan bool{}
-                }
+                mut app := &App{}
                 cmd_serve(port, app) or { panic(err) }
                 return
             }
