@@ -1,71 +1,55 @@
-# Velt Markdown Parser Issues
+# Codebase Analysis & Issues
 
-## 概要
-純粋なV言語でmarkdownパーサーを実装中。`src/md/parser.v` と `src/md/blocks.v` を作成し、外部依存（`import markdown`）を削除した。
+Based on the review of the current codebase (`src/`), here is a detailed breakdown of the issues, specifically addressing the feedback regarding "scalability concerns" and "room for improvement".
 
-## 解決済み ✅
+## 1. Scalability: Per-Page Compilation Strategy (Critical)
 
-### 1. コードブロック内の `<>` がダブルエスケープされる
-- **症状**: `<div>` が `&lt;div&gt;` としてHTMLエンティティがそのまま表示される
-- **原因**: `parser.v` が行単位で処理するため、複数行のコードブロック内容が分割されて `<p>` タグで包まれる
-- **修正**: `in_pre` 状態追跡を追加 (`parser.v` lines 24, 31-46)
+The most significant scalability issue lies in how the static site is generated.
 
-## 未解決 ❌
+*   **Problem:** The current implementation (`src/watch.v` and `src/generator.v`) generates a temporary V source file (`build_gen_*.v`) for **every single content page** and compiles/runs it individually using `v run`.
+*   **Evidence:**
+    *   `src/watch.v`: Calls `build_one` for each file.
+    *   `src/watch.v` (line 144): `cmd := '${v_cmd} run ${gen_file}'` inside the build function.
+*   **Impact:**
+    *   **Build Time:** The time to build the site grows linearly (or worse) with the number of pages. Compiling a V program, even a small one, incurs overhead (compiler startup, type checking, code gen). For a site with 1,000 pages, this would run the compiler 1,000 times.
+    *   **Resource Usage:** Heavy CPU and I/O usage during full builds.
+*   **Recommendation:** Move to a "runtime" generation approach or a single compiled builder that accepts content as data, rather than compiling code for each piece of content.
 
-### 2. GFMテーブルが正しくレンダリングされない
-- **症状**: テーブルヘッダーは表示されるが、本体行（`| docs | ... |`）がバラバラに `<p>` タグで包まれる
-- **テスト結果**: `md.to_html()` 単体では正しいHTMLが生成される（`test_table_output.html` 参照）
-- **問題箇所**: `generator.v` で複数行HTMLを V文字列リテラルに埋め込む際に何かがおかしい
+## 2. Architecture: Tight Coupling & Hardcoded Logic
 
-#### 調査結果
-1. `test_table_output.html` は完璧なHTML:
-```html
-<table>
-<thead>
-<tr><th>テーマ</th><th>説明</th><th>用途</th></tr>
-</thead>
-<tbody>
-<tr><td><code>docs</code></td><td>ドキュメントサイト向け</td><td>API リファレンス、ガイド</td></tr>
-<tr><td><code>blog</code></td><td>ブログ向け</td><td>個人ブログ、技術ブログ</td></tr>
-</tbody>
-</table>
-```
+The architecture is clean for a small project but lacks the abstraction needed for growth.
 
-2. しかし `docs/dist/guides/themes.html` では壊れている:
-```html
-<table>
-<thead>
-<tr><th>テーマ</th><th>説明</th><th>用途</th></tr>
-</thead>
-<tbody>
-<tr><td><code>docs</code></td></tr>  <!-- ここで切れる -->
-</tbody>
-</table>
-<p>| ドキュメントサイト向け | API リファレンス、ガイド |</p>
-```
+*   **Problem:** Layout logic and property parsing are hardcoded in the generator.
+*   **Evidence:**
+    *   `src/generator.v`: Contains explicit `if layout_name == 'post'` checks. Adding a new layout requires modifying the core generator source code.
+    *   `src/generator.v`: `transform_props` is a manual string parsing function mixed into the generator logic.
+*   **Impact:** Violates the Open/Closed principle. Users cannot add new layout types without forking or modifying the framework core.
+*   **Recommendation:** Implement a dynamic layout registration system or use reflection/interfaces to handle layouts generically.
 
-#### 試した対策
-1. ✅ `watch.v` で CRLF → LF 正規化を追加（効果なし）
-2. ✅ `parser.v` に `in_table` 状態追跡を追加（効果なし）
-3. ✅ `generator.v` で `\n` → `\\n` エスケープ追加（効果不明）
+## 3. Robustness: Parser Limitations
 
-#### 仮説
-- `generator.v` の `sb.writeln("buffer << '${escaped_html}'")`
-- 複数行HTMLが V文字列補間 `${}` を通過する際に問題が発生している可能性
-- V言語の文字列補間が改行を含む文字列をどう扱うか要調査
+The custom Velt parser (`src/parser.v`) has correctness issues that will break in complex scenarios.
 
-### 次のステップ
-1. 生成された `.v` ファイル (例: `build_gen_themes.v`) を保存して中身を確認する
-2. 改行を含むHTMLを単一行で埋め込むよう `generator.v` を修正する
-3. または、改行を完全に `\\n` リテラルとして埋め込む方法を再検討
+*   **Problem:** The parser cannot handle nested components of the same name.
+*   **Evidence:**
+    *   `src/parser.v`: The logic searches for the closing tag `</${name}>` using `index_after`. It does not track nesting depth for the specific tag name.
+    *   Example: `<Box><Box>Content</Box></Box>` will result in the outer Box closing at the *first* `</Box>`, leaving the second `</Box>` dangling or incorrectly parsed.
+*   **Impact:** Prevents the creation of complex component hierarchies (e.g., Grid systems, nested containers).
+*   **Recommendation:** Rewrite the parser to use a stack-based approach or a proper tokenizer that tracks depth per tag name.
 
-## ファイル構成
-```
-src/
-├── md/
-│   ├── parser.v    # メインパーサー (to_html)
-│   └── blocks.v    # コードブロック、テーブルパーサー
-├── generator.v     # VDX → V コード生成
-├── watch.v         # ファイル監視、ビルド
-└── parser.v        # VDX パーサー (parse_velt_file)
-```
+## 4. Code Quality: Brittle String Handling
+
+There is heavy reliance on manual string manipulation which is error-prone.
+
+*   **Problem:** Manual HTML escaping and injection.
+*   **Evidence:**
+    *   `src/generator.v`: `escaped_html := children_html.replace('\\', '\\\\').replace('\n', '\\n')...`
+    *   As noted in `issue.md` (the existing issue file), this has already caused bugs with Markdown tables and multiline strings.
+*   **Impact:** High risk of rendering bugs or injection vulnerabilities when content contains special characters not covered by the manual replacements.
+*   **Recommendation:** Use a robust serialization method or a proper template engine that handles escaping automatically.
+
+## 5. Development Experience
+
+*   **Problem:** The file watcher uses polling and full directory walks.
+*   **Evidence:** `src/watch.v` uses `time.sleep` and `os.walk_ext` in an infinite loop.
+*   **Impact:** On large projects with thousands of files, `os.walk_ext` every 200ms will consume significant CPU.
