@@ -1,8 +1,10 @@
 module layouts
 
-pub fn landing(content string, title string, nav_html string) string {
+pub fn landing(content string, title string, nav_html string, lang string, page_path string) string {
 	_ = title // unused but kept for API consistency
 	_ = nav_html
+	_ = lang
+	_ = page_path
 	return '
 <!DOCTYPE html>
 <html lang="en">
