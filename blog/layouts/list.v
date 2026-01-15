@@ -1,6 +1,8 @@
 module layouts
 
-pub fn list(content string, title string, nav_html string) string {
+pub fn list(content string, title string, nav_html string, lang string, page_path string) string {
+    _ = lang
+    _ = page_path
     return '
 <!DOCTYPE html>
 <html lang="en">

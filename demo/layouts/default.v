@@ -1,6 +1,10 @@
 module layouts
 
-pub fn default(content string) string {
+pub fn default(content string, title string, nav_html string, lang string, page_path string) string {
+    _ = title
+    _ = nav_html
+    _ = lang
+    _ = page_path
     return '
 <!DOCTYPE html>
 <html lang="en">

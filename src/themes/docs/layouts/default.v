@@ -1,7 +1,12 @@
 module layouts
 
-pub fn default(content string, title string, nav_html string) string {
+pub fn default(content string, title string, nav_html string, lang string, page_path string) string {
 	page_title := if title.len > 0 { '${title} - Velt' } else { 'Velt Docs' }
+
+	// Silence unused warnings
+	_ = lang
+	_ = page_path
+
 	return '
 <!DOCTYPE html>
 <html lang="en">
